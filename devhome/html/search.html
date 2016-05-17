@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+<title>Devhome - Search</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.6.min.css" />
+<link rel="stylesheet" type="text/css" href="css/font-awesome-4.6.3.min.css" />
+</head>
+<body>
+<style type="text/css">
+.box-title {
+  color: #ccc;
+  font-size: 20px;
+}
+.box-border {
+  border: 1px solid #eee;
+  margin: 5px;
+  padding: 10px;
+}
+</style>
+<div class="container">
+  <div class="input-group">
+    <input id="txtSearch" class="form-control" />
+    <span class="input-group-btn">
+      <a id="btnSearch" class="btn btn-default">Search</a>
+      <a id="btnEdit" class="btn btn-default"><i class="fa fa-edit"></i></a>
+    </span>
+  </div>
+  <div id="boxIndex" class="box-border">
+    <p class="box-title">Index</p>
+    <div class="form-group">
+      <label>URL</label>
+      <input id="txtIndexURL" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select id="txtIndexCategory" class="form-control" value="unknown">
+        <option value="unknown">Unknown</option>
+        <option value="noun">Noun</option>
+        <option value="verb">Verb</option>
+        <option value="adj">Adj</option>
+        <option value="adv">Adv</option>
+        <option value="prep">Prep</option>
+        <option value="pron">Pron</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Content</label>
+      <textarea id="txtIndexContent" rows=6 class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Identifier</label>
+      <input id="txtIndexID" class="form-control" />
+    </div>
+    <div class="text-right">
+      <a id="btnIndexLoad" class="btn btn-default">Load</a>
+      <a id="btnIndex" class="btn btn-success">Index</a>
+      <a id="btnIndexClose" class="btn btn-default">Close</a>
+    </div>
+  </div>
+  <div id="boxResult"></div>
+
+  <div class="well">
+    <p><strong>ElasticSearch</strong> /opt/search/elasticsearch-2.3.2/bin/elasticsearch &gt; /dev/null 2&gt;&amp;1 &amp;</p>
+    <p><strong>NginxMapping</strong> /tool/search =&gt; proxy_pass http://127.0.0.1:20101/</p>
+  </div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+var _world = '.test';
+
+$('#boxIndex').hide();
+
+$('#btnSearch').click(function () {
+  var keywords = $('#txtSearch').val();
+  if (!keywords) return;
+  indexSearch(_world, keywords).done(function (data) {
+    var result = $('#boxResult');
+    result.empty();
+    var hits = data.hits.hits;
+    for (var n = hits.length, i = 0; i < n; i++) {
+      var div = $('<div class="well well-sm"><div><span class="badge x1"></span> <span class="x2"></span></div><div class="x3"></div></div>');
+      div.find('.x1').text(hits[i]._id);
+      div.find('.x2').text(hits[i]._source.url);
+      //div.find('.x3').text(hits[i]._source.content);
+      result.append(div);
+    }
+    div = result = null;
+  });
+});
+
+$('#btnEdit').click(function () {
+  $('#boxIndex').show();
+});
+
+$('#btnIndexClose').click(function () {
+  $('#boxIndex').hide();
+});
+
+$('#btnIndex').click(function () {
+  var category = $('#txtIndexCategory').val(),
+      url = $('#txtIndexURL').val(),
+      content = $('#txtIndexContent').val(),
+      id = $('#txtIndexID').val();
+  if (!id) id = null;
+  if (!url || !content) return;
+  index(_world, category, {
+    url: url,
+    content: content
+  }, id).done(function (data) {
+    $('#txtIndexID').val(data._id);
+  });
+});
+
+$('#btnIndexLoad').click(function () {
+  var category = $('#txtIndexCategory').val(),
+      id = $('#txtIndexID').val();
+
+  if (!id) {
+    $('#txtIndexURL').val('');
+    $('#txtIndexContent').val('');
+    return;
+  }
+
+  indexLoad(_world, category, id).done(function (data) {
+    $('#txtIndexURL').val(data._source.url);
+    $('#txtIndexContent').val(data._source.content);
+    return;
+  });
+});
+
+function index(world, category, data, id) {
+  if (id)
+    return $.ajax({
+      method: 'PUT',
+      url: ['/tool/search', world, category, id].join('/'),
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(data)
+    });
+  else
+    return $.ajax({
+      method: 'POST',
+      url: ['/tool/search', world, category].join('/'),
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(data)
+    });
+}
+
+function indexSearch(world, keywords) {
+  return $.ajax({
+    method: 'GET',
+    url: ['/tool/search', world, '_search?pretty'].join('/'),
+    dataType: 'json',
+    data: {q: keywords}
+  });
+}
+
+function indexLoad(world, category, id) {
+  return $.ajax({
+    method: 'GET',
+    url: ['/tool/search', world, category, id].join('/'),
+    dataType: 'json'
+  });
+}
+</script>
+</body>
+</html>
