@@ -18,6 +18,14 @@
   margin: 5px;
   padding: 10px;
 }
+.box-result-content {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-left: 5px solid #eee;
+  padding: 3px;
+  margin: 3px;
+}
 </style>
 <div class="container">
   <div class="input-group">
@@ -82,10 +90,13 @@ $('#btnSearch').click(function () {
     result.empty();
     var hits = data.hits.hits;
     for (var n = hits.length, i = 0; i < n; i++) {
-      var div = $('<div class="well well-sm"><div><span class="badge x1"></span> <span class="x2"></span></div><div class="x3"></div></div>');
+      var div = $('<div class="well well-sm"><div><span class="badge x1"></span> <a target="_blank" class="x2"></a></div><div class="box-result-content x3"></div></div>'),
+          content = hits[i]._source.content;
       div.find('.x1').text(hits[i]._id);
       div.find('.x2').text(hits[i]._source.url);
-      //div.find('.x3').text(hits[i]._source.content);
+      div.find('.x2').attr('href', hits[i]._source.url);
+      if (content && content.length > 200) content = content.substring(0, 200) + ' ...';
+      div.find('.x3').text(content);
       result.append(div);
     }
     div = result = null;
@@ -121,6 +132,7 @@ $('#btnIndexLoad').click(function () {
 
   if (!id) {
     $('#txtIndexURL').val('');
+    $('#txtIndexCategory').val('unknown');
     $('#txtIndexContent').val('');
     return;
   }
