@@ -1,0 +1,359 @@
+$ gdb --args ./iojs_g -pe 'process.hrtime([0,0])'
+
+(gdb) source deps/v8/tools/gdbinit
+(gdb) b node::Hrtime
+Breakpoint 1 at 0x1282619: file ../src/node.cc, line 2028.
+(gdb) r
+Starting program: /usr/local/google/home/ofrobots/src/io.js/iojs_g -pe process.hrtime\(\[0,0\]\)
+...
+
+Breakpoint 1, node::Hrtime (args=...) at ../src/node.cc:2028
+2028	  Environment* env = Environment::GetCurrent(args);
+
+(gdb) jst
+
+==== JS stack trace =========================================
+
+Security context: 0x2a4167618d61 <JS Object>#0#
+    1: /* anonymous */ [[eval]:1] (this=0x2a416766cf59 <JS Global Object>#1#)
+    5: runInThisContext [vm.js:54] (this=0x3598f70043b9 <an Object with map 0x2f271e218081>#2#,code=0x2c85001f0929 <String[21]: process.hrtime([0,0])>,options=0x3598f7127ab1 <an Object with map 0x2f271e212cf9>#3#)
+    6: /* anonymous */ [[eval]-wrapper:6] (this=0x3598f7121e51 <an Object with map 0x2f271e205ed1>#4#,exports=0x3598f7121e51 <an Object with map 0x2f271e205ed1>#4#,require=0x3598f7126069 <JS Function require (SharedFunctionInfo 0x1ce87c960f41)>#5#,module=0x3598f7121d39 <a Module with map 0x2f271e236129>#6#,__filename=0x3598f7125e81 <String[14]: [eval]-wrapper>,__dirname=0x2c8500104cc1 <String[1]: .>)
+    8: _compile [module.js:428] (this=0x3598f7121d39 <a Module with map 0x2f271e236129>#6#,content=0x3598f7124e79 <String[224]\: global.__filename = "[eval]";\nglobal.exports = exports;\nglobal.module = module;\nglobal.__dirname = __dirname;\nglobal.require = require;\nreturn require("vm").runInThisContext("process.hrtime([0,0])", { filename: "[eval]" });\n>,filename=0x3598f7125e81 <String[14]: [eval]-wrapper>)
+    9: /* anonymous */(aka /* anonymous */) [node.js:567] (this=0x2a4167604121 <undefined>)
+   10: doNTCallback0(aka doNTCallback0) [node.js:408] (this=0x2a4167604121 <undefined>,callback=0x3598f7124ea1 <JS Function (SharedFunctionInfo 0x1ce87c94ab59)>#7#)
+   11: _tickCallback [node.js:337] (this=0x2a416766ce31 <a process with map 0x2f271e213371>#8#)
+
+==== Details ================================================
+
+[1]: /* anonymous */ [[eval]:1] (this=0x2a416766cf59 <JS Global Object>#1#) {
+  // stack-allocated locals
+  var .result = 0x2a4167604121 <undefined>
+  // expression stack (top to bottom)
+  [04] : 0x2a4167662969 <JS Function hrtime (SharedFunctionInfo 0x2a41676628d1)>#9#
+  [03] : 0x3598f7127c31 <JS Array[2]>#10#
+  [02] : 0x2a416766ce31 <a process with map 0x2f271e213371>#8#
+  [01] : 0x2a4167662969 <JS Function hrtime (SharedFunctionInfo 0x2a41676628d1)>#9#
+--------- s o u r c e   c o d e ---------
+process.hrtime([0,0])
+-----------------------------------------
+}
+
+[5]: runInThisContext [vm.js:54] (this=0x3598f70043b9 <an Object with map 0x2f271e218081>#2#,code=0x2c85001f0929 <String[21]: process.hrtime([0,0])>,options=0x3598f7127ab1 <an Object with map 0x2f271e212cf9>#3#) {
+  // stack-allocated locals
+  var script = 0x3598f7127ae1 <a ContextifyScript with map 0x2f271e211fc1>#11#
+  // expression stack (top to bottom)
+  [04] : 0x2a4167665bf1 <JS Function runInThisContext (SharedFunctionInfo 0x2a4167665b59)>#12#
+  [03] : 0x3598f7127ab1 <an Object with map 0x2f271e212cf9>#3#
+  [02] : 0x3598f7127ae1 <a ContextifyScript with map 0x2f271e211fc1>#11#
+  [01] : 0x2a4167665bf1 <JS Function runInThisContext (SharedFunctionInfo 0x2a4167665b59)>#12#
+--------- s o u r c e   c o d e ---------
+function (code, options) {\x0a  var script = new Script(code, options);\x0a  return script.runInThisContext(options);\x0a}
+-----------------------------------------
+}
+
+[6]: /* anonymous */ [[eval]-wrapper:6] (this=0x3598f7121e51 <an Object with map 0x2f271e205ed1>#4#,exports=0x3598f7121e51 <an Object with map 0x2f271e205ed1>#4#,require=0x3598f7126069 <JS Function require (SharedFunctionInfo 0x1ce87c960f41)>#5#,module=0x3598f7121d39 <a Module with map 0x2f271e236129>#6#,__filename=0x3598f7125e81 <String[14]: [eval]-wrapper>,__dirname=0x2c8500104cc1 <String[1]: .>) {
+  // expression stack (top to bottom)
+  [03] : 0x3598f7127ab1 <an Object with map 0x2f271e212cf9>#3#
+  [02] : 0x2c85001f0929 <String[21]: process.hrtime([0,0])>
+  [01] : 0x3598f70043b9 <an Object with map 0x2f271e218081>#2#
+  [00] : 0x2a41676dc811 <JS Function exports.runInThisContext (SharedFunctionInfo 0x2a41676dc319)>#13#
+--------- s o u r c e   c o d e ---------
+function (exports, require, module, __filename, __dirname) { global.__filename = "[eval]";\x0aglobal.exports = exports;\x0aglobal.module = module;\x0aglobal.__dirname = __dirname;\x0aglobal.require = require;\x0areturn require("vm").runInThisContext("process.hrtime([0,0])", { filename: "[eval]" });\x0a\x0a}
+-----------------------------------------
+}
+
+[8]: _compile [module.js:428] (this=0x3598f7121d39 <a Module with map 0x2f271e236129>#6#,content=0x3598f7124e79 <String[224]\: global.__filename = "[eval]";\nglobal.exports = exports;\nglobal.module = module;\nglobal.__dirname = __dirname;\nglobal.require = require;\nreturn require("vm").runInThisContext("process.hrtime([0,0])", { filename: "[eval]" });\n>,filename=0x3598f7125e81 <String[14]: [eval]-wrapper>) {
+  // stack-allocated locals
+  var require = 0x3598f7126069 <JS Function require (SharedFunctionInfo 0x1ce87c960f41)>#5#
+  var dirname = 0x2c8500104cc1 <String[1]: .>
+  var wrapper = 0x3598f71271c9 <String[290]\: (function (exports, require, module, __filename, __dirname) { global.__filename = "[eval]";\nglobal.exports = exports;\nglobal.module = module;\nglobal.__dirname = __dirname;\nglobal.require = require;\nreturn require("vm").runInThisContext("process.hrtime([0,0])", { filename: "[eval]" });\n\n});>
+  var compiledWrapper = 0x3598f7127481 <JS Function (SharedFunctionInfo 0x1ce87c9619b9)>#14#
+  var args = 0x3598f7127521 <JS Array[5]>#15#
+  // heap-allocated locals
+  var self = 0x3598f7121d39 <a Module with map 0x2f271e236129>#6#
+  // expression stack (top to bottom)
+  [08] : 0x3598f7127521 <JS Array[5]>#15#
+  [07] : 0x3598f7121e51 <an Object with map 0x2f271e205ed1>#4#
+  [06] : 0x3598f7127481 <JS Function (SharedFunctionInfo 0x1ce87c9619b9)>#14#
+  [05] : 0x2a416765ec81 <JS Function apply (SharedFunctionInfo 0x2a416765ebe9)>#16#
+--------- s o u r c e   c o d e ---------
+function (content, filename) {\x0a  var self = this;\x0a  // remove shebang\x0a  content = content.replace(/^\#\!.*/, '');\x0a\x0a  function require(path) {\x0a    return self.require(path);\x0a  }\x0a\x0a  require.resolve = function(request) {\x0a    return Module._resolveFilename(request, self);\x0a  };\x0a\x0a  Object.defineProperty(require, '...
+
+-----------------------------------------
+}
+
+[9]: /* anonymous */(aka /* anonymous */) [node.js:567] (this=0x2a4167604121 <undefined>) {
+  // stack-allocated locals
+  var result = 0x2a4167604121 <undefined>
+  // expression stack (top to bottom)
+  [04] : 0x3598f7125e81 <String[14]: [eval]-wrapper>
+  [03] : 0x3598f7124e79 <String[224]\: global.__filename = "[eval]";\nglobal.exports = exports;\nglobal.module = module;\nglobal.__dirname = __dirname;\nglobal.require = require;\nreturn require("vm").runInThisContext("process.hrtime([0,0])", { filename: "[eval]" });\n>
+  [02] : 0x3598f7121d39 <a Module with map 0x2f271e236129>#6#
+  [01] : 0x1ce87c95eb99 <JS Function Module._compile (SharedFunctionInfo 0x1ce87c94b7f1)>#17#
+--------- s o u r c e   c o d e ---------
+function () {\x0a      var result = module._compile(script, name + '-wrapper');\x0a      if (process._print_eval) console.log(result);\x0a    }
+-----------------------------------------
+}
+
+[10]: doNTCallback0(aka doNTCallback0) [node.js:408] (this=0x2a4167604121 <undefined>,callback=0x3598f7124ea1 <JS Function (SharedFunctionInfo 0x1ce87c94ab59)>#7#) {
+  // stack-allocated locals
+  var threw = 0x2a4167604141 <true>
+  // expression stack (top to bottom)
+  [07] : 0x2a4167604121 <undefined>
+  [06] : 0x3598f7124ea1 <JS Function (SharedFunctionInfo 0x1ce87c94ab59)>#7#
+--------- s o u r c e   c o d e ---------
+function doNTCallback0(callback) {\x0a      var threw = true;\x0a      try {\x0a        callback();\x0a        threw = false;\x0a      } finally {\x0a        if (threw)\x0a          tickDone();\x0a      }\x0a    }
+-----------------------------------------
+}
+
+[11]: _tickCallback [node.js:337] (this=0x2a416766ce31 <a process with map 0x2f271e213371>#8#) {
+  // stack-allocated locals
+  var callback = 0x3598f7124ea1 <JS Function (SharedFunctionInfo 0x1ce87c94ab59)>#7#
+  var args = 0x2a4167604121 <undefined>
+  var tock = 0x3598f7125319 <a TickObject with map 0x2f271e236291>#18#
+  // expression stack (top to bottom)
+  [05] : 0x3598f7124ea1 <JS Function (SharedFunctionInfo 0x1ce87c94ab59)>#7#
+  [04] : 0x2a4167604121 <undefined>
+  [03] : 0x3598f70c4031 <JS Function doNTCallback0 (SharedFunctionInfo 0x1ce87c948941)>#19#
+--------- s o u r c e   c o d e ---------
+function _tickCallback() {\x0a      var callback, args, tock;\x0a\x0a      do {\x0a        while (tickInfo[kIndex] < tickInfo[kLength]) {\x0a          tock = nextTickQueue[tickInfo[kIndex]++];\x0a          callback = tock.callback;\x0a          args = tock.args;\x0a          // Using separate callback execution functions helps to limit the\x0a    ...
+
+-----------------------------------------
+}
+
+==== Key         ============================================
+
+ #0# 0x2a4167618d61: 0x2a4167618d61 <JS Object>
+ #1# 0x2a416766cf59: 0x2a416766cf59 <JS Global Object>
+ #2# 0x3598f70043b9: 0x3598f70043b9 <an Object with map 0x2f271e218081>
+ #3# 0x3598f7127ab1: 0x3598f7127ab1 <an Object with map 0x2f271e212cf9>
+          filename: 0x2c850012d921 <String[6]: [eval]>
+ #4# 0x3598f7121e51: 0x3598f7121e51 <an Object with map 0x2f271e205ed1>
+ #5# 0x3598f7126069: 0x3598f7126069 <JS Function require (SharedFunctionInfo 0x1ce87c960f41)>
+              main: 0x2a4167604121 <undefined>
+        extensions: 0x3598f711f291 <an Object with map 0x2f271e235d39>#20#
+             cache: 0x3598f711efa1 <an Object with map 0x2f271e205ed1>#21#
+ #6# 0x3598f7121d39: 0x3598f7121d39 <a Module with map 0x2f271e236129>
+                id: 0x2c850012d921 <String[6]: [eval]>
+           exports: 0x3598f7121e51 <an Object with map 0x2f271e205ed1>#4#
+            parent: 0x2a4167604121 <undefined>
+          filename: 0x3598f7122d49 <String[48]: /usr/local/google/home/ofrobots/src/io.js/[eval]>
+            loaded: 0x2a4167604161 <false>
+          children: 0x3598f7122121 <JS Array[0]>#22#
+             paths: 0x3598f7123191 <JS Array[8]>#23#
+ #7# 0x3598f7124ea1: 0x3598f7124ea1 <JS Function (SharedFunctionInfo 0x1ce87c94ab59)>
+ #8# 0x2a416766ce31: 0x2a416766ce31 <a process with map 0x2f271e213371>
+ #9# 0x2a4167662969: 0x2a4167662969 <JS Function hrtime (SharedFunctionInfo 0x2a41676628d1)>
+ #10# 0x3598f7127c31: 0x3598f7127c31 <JS Array[2]>
+ #11# 0x3598f7127ae1: 0x3598f7127ae1 <a ContextifyScript with map 0x2f271e211fc1>
+ #12# 0x2a4167665bf1: 0x2a4167665bf1 <JS Function runInThisContext (SharedFunctionInfo 0x2a4167665b59)>
+ #13# 0x2a41676dc811: 0x2a41676dc811 <JS Function exports.runInThisContext (SharedFunctionInfo 0x2a41676dc319)>
+ #14# 0x3598f7127481: 0x3598f7127481 <JS Function (SharedFunctionInfo 0x1ce87c9619b9)>
+ #15# 0x3598f7127521: 0x3598f7127521 <JS Array[5]>
+                 0: 0x3598f7121e51 <an Object with map 0x2f271e205ed1>#4#
+                 1: 0x3598f7126069 <JS Function require (SharedFunctionInfo 0x1ce87c960f41)>#5#
+                 2: 0x3598f7121d39 <a Module with map 0x2f271e236129>#6#
+                 3: 0x3598f7125e81 <String[14]: [eval]-wrapper>
+                 4: 0x2c8500104cc1 <String[1]: .>
+ #16# 0x2a416765ec81: 0x2a416765ec81 <JS Function apply (SharedFunctionInfo 0x2a416765ebe9)>
+ #17# 0x1ce87c95eb99: 0x1ce87c95eb99 <JS Function Module._compile (SharedFunctionInfo 0x1ce87c94b7f1)>
+ #18# 0x3598f7125319: 0x3598f7125319 <a TickObject with map 0x2f271e236291>
+            domain: 0x2a4167604101 <null>
+              args: 0x2a4167604121 <undefined>
+ #19# 0x3598f70c4031: 0x3598f70c4031 <JS Function doNTCallback0 (SharedFunctionInfo 0x1ce87c948941)>
+ #20# 0x3598f711f291: 0x3598f711f291 <an Object with map 0x2f271e235d39>
+ #21# 0x3598f711efa1: 0x3598f711efa1 <an Object with map 0x2f271e205ed1>
+ #22# 0x3598f7122121: 0x3598f7122121 <JS Array[0]>
+ #23# 0x3598f7123191: 0x3598f7123191 <JS Array[8]>
+                 0: 0x3598f7123fb9 <String[54]: /usr/local/google/home/ofrobots/src/io.js/node_modules>
+                 1: 0x3598f7124309 <String[48]: /usr/local/google/home/ofrobots/src/node_modules>
+                 2: 0x3598f7124459 <String[44]: /usr/local/google/home/ofrobots/node_modules>
+                 3: 0x3598f7124599 <String[35]: /usr/local/google/home/node_modules>
+                 4: 0x3598f71246c1 <String[30]: /usr/local/google/node_modules>
+                 5: 0x3598f71247d1 <String[23]: /usr/local/node_modules>
+                 6: 0x3598f71248c9 <String[17]: /usr/node_modules>
+                 7: 0x3598f71249b1 <String[13]: /node_modules>
+=====================
+
+$1 = void
+
+# Let us the print the 'this' JS object in the top JS function 
+
+(gdb) job 0x2a416766cf59
+global_proxy 0x2a416766cf59: [JSObject]
+ - map = 0x2f271e20ed21 [FAST_HOLEY_SMI_ELEMENTS]
+ - prototype = 0x2a4167618d61
+ {
+ }
+native context : 0x2a416766caa1 <FixedArray[112]>
+$2 = void
+
+# Let's print that native context array
+
+(gdb) job 0x2a416766caa1
+0x2a416766caa1: [FixedArray]
+ - length: 112
+  [0]: 0x2a4167618749 <JS Function Empty (SharedFunctionInfo 0x2a41676186b1)>
+  [1]: 0
+  [2]: 0x2a4167618d61 <JS Object>
+  [3]: 0x2a4167618d61 <JS Object>
+  [4]: 0x2a416766cf59 <JS Global Object>
+  [5]: 0x2a4167618d61 <JS Object>
+  [6]: 0x2f271e207119 <Map(elements=3)>
+  [7]: 0x2f271e207161 <Map(elements=7)>
+  [8]: 0x2f271e2071a9 <Map(elements=3)>
+  [9]: 0x2f271e20ecd9 <Map(elements=3)>
+  [10]: 0x2f271e205df9 <Map(elements=3)>
+  [11]: 0x2f271e205db1 <Map(elements=3)>
+  [12]: 0x2f271e205ff1 <Map(elements=3)>
+  [13]: 0x2f271e205d69 <Map(elements=3)>
+  [14]: 0x2f271e205f61 <Map(elements=3)>
+  [15]: 0x2f271e206039 <Map(elements=3)>
+  [16]: 0x2a4167618679 <an Object with map 0x2f271e207fb9>
+  [17]: 0x2a41676a99d1 <JS Array[0]>
+  [18]: 0x2a41676192c1 <JS Function Boolean (SharedFunctionInfo 0x2a4167619229)>
+  [19]: 0x2a41676191e1 <JS Function Number (SharedFunctionInfo 0x2a4167619149)>
+  [20]: 0x2a41676193a1 <JS Function String (SharedFunctionInfo 0x2a4167619309)>
+  [21]: 0x2f271e20ec01 <Map(elements=1)>
+  [22]: 0x2a41676194b9 <JS Function Symbol (SharedFunctionInfo 0x2a4167619421)>
+  [23]: 0x2a4167618631 <JS Function Object (SharedFunctionInfo 0x2a4167618599)>
+  [24]: 0x2a416761b6a9 <JS Function InternalArray (SharedFunctionInfo 0x2a416761b611)>
+  [25]: 0x2a4167618fe9 <JS Function Array (SharedFunctionInfo 0x2a4167618f51)>
+  [26]: 0x2a416761ef89 <FixedArray[26]>
+  [27]: 0x2a4167619599 <JS Function Date (SharedFunctionInfo 0x2a4167619501)>
+  [28]: 0x2a41676197d9 <a JSON with map 0x2f271e20df11>
+  [29]: 0x2a4167619679 <JS Function RegExp (SharedFunctionInfo 0x2a41676195e1)>
+  [30]: 0x2a4167637729 <JS Function CreateDate (SharedFunctionInfo 0x2a4167635bc9)>
+  [31]: 0x2a416761e9a9 <JS Function ToNumber (SharedFunctionInfo 0x2a416761d0d1)>
+  [32]: 0x2a416761ea79 <JS Function ToString (SharedFunctionInfo 0x2a416761d201)>
+  [33]: 0x2a4167653d41 <JS Function ToDetailString (SharedFunctionInfo 0x2a416764d761)>
+  [34]: 0x2a416761eb91 <JS Function ToObject (SharedFunctionInfo 0x2a416761d3c9)>
+  [35]: 0x2a416761ebf9 <JS Function ToInteger (SharedFunctionInfo 0x2a416761d461)>
+  [36]: 0x2a416761ec89 <JS Function ToUint32 (SharedFunctionInfo 0x2a416761d591)>
+  [37]: 0x2a416761ecd1 <JS Function ToInt32 (SharedFunctionInfo 0x2a416761d629)>
+  [38]: 0x2a4167604121 <undefined>
+  [39]: 0x2a4167624989 <JS Function eval (SharedFunctionInfo 0x2a4167620531)>
+  [40]: 0x2a4167619889 <JS Function ArrayBuffer (SharedFunctionInfo 0x2a41676197f1)>
+  [41]: 0x2a4167619969 <JS Function Uint8Array (SharedFunctionInfo 0x2a41676198d1)>
+  [42]: 0x2a4167619a49 <JS Function Int8Array (SharedFunctionInfo 0x2a41676199b1)>
+  [43]: 0x2a4167619b29 <JS Function Uint16Array (SharedFunctionInfo 0x2a4167619a91)>
+  [44]: 0x2a4167619c09 <JS Function Int16Array (SharedFunctionInfo 0x2a4167619b71)>
+  [45]: 0x2a4167619ce9 <JS Function Uint32Array (SharedFunctionInfo 0x2a4167619c51)>
+  [46]: 0x2a4167619dc9 <JS Function Int32Array (SharedFunctionInfo 0x2a4167619d31)>
+  [47]: 0x2a4167619ea9 <JS Function Float32Array (SharedFunctionInfo 0x2a4167619e11)>
+  [48]: 0x2a4167619f89 <JS Function Float64Array (SharedFunctionInfo 0x2a4167619ef1)>
+  [49]: 0x2a416761a069 <JS Function Uint8ClampedArray (SharedFunctionInfo 0x2a4167619fd1)>
+  [50]: 0x2f271e206939 <Map(elements=8)>
+  [51]: 0x2f271e206861 <Map(elements=9)>
+  [52]: 0x2f271e206ae9 <Map(elements=10)>
+  [53]: 0x2f271e206a11 <Map(elements=11)>
+  [54]: 0x2f271e206c99 <Map(elements=12)>
+  [55]: 0x2f271e206bc1 <Map(elements=13)>
+  [56]: 0x2f271e206d71 <Map(elements=14)>
+  [57]: 0x2f271e206e49 <Map(elements=15)>
+  [58]: 0x2f271e206f21 <Map(elements=16)>
+  [59]: 0x2a416761a149 <JS Function DataView (SharedFunctionInfo 0x2a416761a0b1)>
+  [60]: 0x2a41676c37b1 <JS Object>
+  [61]: 0x2a4167604121 <undefined>
+  [62]: 0x2a4167654559 <JS Function GetStackTraceLine (SharedFunctionInfo 0x2a416764e769)>
+  [63]: 0x2a4167604121 <undefined>
+  [64]: 0x2a416766d7c9 <FixedArray[1027]>
+  [65]: 0x2a416761a8c1 <FixedArray[1]>
+  [66]: 0x2a416761aa09 <FixedArray[64]>
+  [67]: 0x2a416768fa39 <FixedArray[4]>
+  [68]: 0x2a416761a799 <JS Function (SharedFunctionInfo 0x2a416761a701)>
+  [69]: 0x2a416761a879 <JS Function (SharedFunctionInfo 0x2a416761a7e1)>
+  [70]: 0x2a416761b081 <JS Function Script (SharedFunctionInfo 0x2a416761afe9)>
+  [71]: 0x2a416761b559 <JS Function OpaqueReference (SharedFunctionInfo 0x2a416761b4c1)>
+  [72]: 0x2a416761a6b9 <JS Function (SharedFunctionInfo 0x2a416761a621)>
+  [73]: 0x2a4167604121 <undefined>
+  [74]: 0x2a41676c37c9 <FixedArray[33]>
+  [75]: 0x2a4167604121 <undefined>
+  [76]: 0x2a4167604121 <undefined>
+  [77]: 0x2a4167604121 <undefined>
+  [78]: 0x2a4167604121 <undefined>
+  [79]: 0x2a41676c13c1 <JS Function IsPromise (SharedFunctionInfo 0x2a416764ca61)>
+  [80]: 0x2a41676c1431 <JS Function PromiseCreate (SharedFunctionInfo 0x2a416764caf9)>
+  [81]: 0x2a41676c14a1 <JS Function PromiseResolve (SharedFunctionInfo 0x2a416764cb91)>
+  [82]: 0x2a41676c1511 <JS Function PromiseReject (SharedFunctionInfo 0x2a416764cc29)>
+  [83]: 0x2a41676c1581 <JS Function chain (SharedFunctionInfo 0x2a416764ccc1)>
+  [84]: 0x2a41676c15f1 <JS Function catch (SharedFunctionInfo 0x2a416764cd59)>
+  [85]: 0x2a41676c1661 <JS Function then (SharedFunctionInfo 0x2a416764cdf1)>
+  [86]: 0x2a4167624fc9 <JS Function ToCompletePropertyDescriptor (SharedFunctionInfo 0x2a4167621111)>
+  [87]: 0x2a4167604121 <undefined>
+  [88]: 0x2a4167604121 <undefined>
+  [89]: 0x2a4167604121 <undefined>
+  [90]: 0x2a4167604121 <undefined>
+  [91]: 0x2a4167646f41 <JS Function NotifyChange (SharedFunctionInfo 0x2a4167645571)>
+  [92]: 0x2a4167646ed9 <JS Function EnqueueSpliceRecord (SharedFunctionInfo 0x2a41676454d9)>
+  [93]: 0x2a4167646e49 <JS Function BeginPerformSplice (SharedFunctionInfo 0x2a41676453a9)>
+  [94]: 0x2a4167646e91 <JS Function EndPerformSplice (SharedFunctionInfo 0x2a4167645441)>
+  [95]: 0x2a4167646bb9 <JS Function NativeObjectObserve (SharedFunctionInfo 0x2a4167644f81)>
+  [96]: 0x2a4167647141 <JS Function NativeObjectGetNotifier (SharedFunctionInfo 0x2a4167645869)>
+  [97]: 0x2a4167647089 <JS Function NativeObjectNotifierPerformChange (SharedFunctionInfo 0x2a4167645739)>
+  [98]: 0x2f271e207af1 <Map(elements=3)>
+  [99]: 0x2f271e207b39 <Map(elements=3)>
+  [100]: 0x2f271e207b81 <Map(elements=3)>
+  [101]: 0x2f271e207041 <Map(elements=3)>
+  [102]: 0x2f271e207941 <Map(elements=1)>
+  [103]: 0x2f271e2078f9 <Map(elements=1)>
+  [104]: 0x2a416765dc89 <JS Function ArrayValues (SharedFunctionInfo 0x2a416765d571)>
+  [105]: 0x2a41676c38e1 <FixedArray[1]>
+  [106]: 0x2a416762b201 <FixedArray[128]>
+  [107]: 0x2a416761ec41 <JS Function ToLength (SharedFunctionInfo 0x2a416761d4f9)>
+  [108]: 0x2a4167604121 <undefined>
+  [109]: 0x2a4167604121 <undefined>
+  [110]: 0x2a4167604121 <undefined>
+  [111]: 0x2a4167604121 <undefined>
+$3 = void
+
+# Let us print the ToLength function at index 107
+
+(gdb) job 0x2a416761ec41
+0x2a416761ec41: [Function]
+ - map = 0x2f271e205db1
+ - initial_map =
+ - shared_info = 0x2a416761d4f9 <SharedFunctionInfo ToLength>
+   - name = 0x2c850010e889 <String[8]: ToLength>
+ - context = 0x2a416768fa39 <FixedArray[4]>
+ - literals = 0x2c8500104101 <FixedArray[0]>
+ - code = 0x291f41115581 <Code: BUILTIN>
+   #length: 0x2a4167618369 <ExecutableAccessorInfo> (accessor constant)
+   #name: 0x2a41676183a1 <ExecutableAccessorInfo> (accessor constant)
+   #arguments: 0x2a41676183d9 <ExecutableAccessorInfo> (accessor constant)
+   #caller: 0x2a4167618411 <ExecutableAccessorInfo> (accessor constant)
+   #prototype: 0x2a4167618449 <ExecutableAccessorInfo> (accessor constant)
+
+$4 = void
+
+# Ah, it is a builtin function. Let's look at it.
+
+(gdb) job 0x291f41115581
+0x291f41115581: [Code]
+kind = BUILTIN
+Instructions (size = 56)
+0x291f411155e0     0  55             push rbp
+0x291f411155e1     1  4889e5         REX.W movq rbp,rsp
+0x291f411155e4     4  56             push rsi
+0x291f411155e5     5  4533d2         xorl r10,r10
+0x291f411155e8     8  4f8d14e2       REX.W leaq r10,[r10+r12*8]
+0x291f411155ec    12  4152           push r10
+0x291f411155ee    14  49ba815511411f290000 REX.W movq r10,CompileLazy  (0x291f41115581)    ;; object: 0x291f41115581 <Code: BUILTIN>
+0x291f411155f8    24  4152           push r10
+0x291f411155fa    26  57             push rdi
+0x291f411155fb    27  57             push rdi
+0x291f411155fc    28  b801000000     movl rax,0x1
+0x291f41115601    33  498d9d2faa9afe REX.W leaq rbx,[r13-0x16555d1]
+0x291f41115608    40  e8530affff     call 0x291f41106060     ;; code: STUB, CEntryStub, minor: 0
+0x291f4111560d    45  5f             pop rdi
+0x291f4111560e    46  488be5         REX.W movq rsp,rbp
+0x291f41115611    49  5d             pop rbp
+0x291f41115612    50  488d405f       REX.W leaq rax,[rax+0x5f]
+0x291f41115616    54  ffe0           jmp rax
+
+
+RelocInfo (size = 2)
+0x291f411155f0  embedded object  (0x291f41115581 <Code: BUILTIN>)
+0x291f41115609  code target (STUB)  (0x291f41106060)
+
+$5 = void
