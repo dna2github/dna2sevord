@@ -1,0 +1,8 @@
+call PyGILState_Ensure()
+call PyRun_SimpleString("print ('Hello World')")
+call PyGILState_Release($1)
+
+import sys
+sys.path.insert(0, os.path.dirname("inject.py"))
+sys.path.insert(0, os.path.abspath(os.path.dirname("inject.py") + "/.."))
+exec(open("inject.py").read())
