@@ -107,9 +107,9 @@ gdb -p <pid>
 
 ```java
 public class Test {
+  private static boolean test = true;
+
   public static void main(String[] args) {
-    boolean test = true;
-    String o = "This is a ghost";
     while (test) {
       System.out.println("Hello World");
       try { Thread.sleep(1000); } catch (Exception e) {}
@@ -119,38 +119,62 @@ public class Test {
 }
 ```
 
-byte code:
+This is a simple program for the game.
+Need some gdb skill to get `function pointer` works.
+
+```
+javac Test.java
+javap -c Test.class
+java -cp . Test &
+ps -ef | grep java
+gdb -p <pid>
+> set $pool = (long*)malloc(100)
+> memset($pool, 0, 100)
+> set $r = $pool
+> set $jvm = $pool + 1
+> set $jvm_api = $pool + 2
+> set $env = $pool + 3
+> set $env_api = $pool + 4
+> call JNI_GetCreatedJavaVMs(0, 0, $r)
+> call JNI_GetCreatedJavaVMs($jvm, *$r, $r)
+> set $jvm = (long *) (*$jvm)
+> set $jvm_api = (long *) (*$jvm)
+> set $jvm_args = $pool + 5
+> set *$jvm_args = 0x00010008
+> set *($jvm_args + 1) = 0
+> set *($jvm_args + 2) = 0
+> set $$ATTACH_CURRENT_THREAD = 4
+> set $$DETACH_CURRENT_THREAD = 5
+> set $$FIND_CLASS = 6
+> set $$GET_STATIC_FILED_ID = 144
+> set $$GET_STATIC_BOOLEAN_FILED = 146
+> set $$SET_STATIC_BOOLEAN_FIELD = 155
+> p $jvm_api[$$ATTACH_CURRENT_THREAD]($jvm, $env, $jvm_args)
+> set $env = (long *)*$env
+> set $env_api = (long *)*$env
+> p $test_klass = $env_api[$$FIND_CLASS]($env, "Test")
+> p $test_klass_test = $env_api[$$GET_STATIC_FILED_ID]($env, $test_klass, "test", "Z")
+> p $env_api[$$GET_STATIC_BOOLEAN_FILED]($env, $test_klass, $test_klass_test)
+> p $env_api[$$SET_STATIC_BOOLEAN_FIELD]($env, $test_klass, $test_klass_test, 0)
+> p $jvm_api[$$DETACH_CURRENT_THREAD]($jvm)
+> c
+```
+
+For `lldb`, it is a little bit complex to call function pointer:
+`((int (*)(long*, long**, long*))($jvm_api[4]))($jvm, &$env, $jvm_args)`
+
+(Hard Problem)
+
 ```java
 public class Test {
-  public Test();
-    Code:
-       0: aload_0
-       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
-       4: return
-
-  public static void main(java.lang.String[]);
-    Code:
-       0: iconst_1
-       1: istore_1
-       2: ldc           #2                  // String This is a ghost
-       4: astore_2
-       5: iload_1
-       6: ifeq          30
-       9: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
-      12: ldc           #4                  // String Hello World
-      14: invokevirtual #5                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
-      17: ldc2_w        #6                  // long 1000l
-      20: invokestatic  #8                  // Method java/lang/Thread.sleep:(J)V
-      23: goto          5
-      26: astore_3
-      27: goto          5
-      30: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
-      33: ldc           #10                 // String Bye-bye
-      35: invokevirtual #5                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
-      38: return
-    Exception table:
-       from    to  target type
-          17    23    26   Class java/lang/Exception
+  public static void main(String[] args) {
+    boolean test = true;
+    while (test) {
+      System.out.println("Hello World");
+      try { Thread.sleep(1000); } catch (Exception e) {}
+    }
+    System.out.println("Bye-bye");
+  }
 }
 ```
 
@@ -160,7 +184,7 @@ Now thinking the solution. Have a progress track:
 - `jmap -dump:file=hex <pid> && jhat hex` and browse at http://localhost:7000;
 cannot find any reference to `test` (it is not an object and just an instance of `class Z`)
 - `jstack <pid>` can get the tid of main thread (0x7fa412002000)
-and `jhat hex` has the object of the java.lang.Thread of main (0x76ab05c40)
+and `jhat hex` has the object of the `java.lang.Thread` of main (0x76ab05c40)
 - `java.lang.Thread` has a native method `start0`
 which invokes hotspot method of `JVM_StartThread` (hotspot/src/share/vm/prims/jvm.cpp),
 there is a class `JavaThread` may contain the memory structure for local variables in thread stack.
