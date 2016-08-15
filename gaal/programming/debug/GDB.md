@@ -178,8 +178,6 @@ public class Test {
 }
 ```
 
-Now thinking the solution. Have a progress track:
-
 - `javac Test.java`, `javap -c Test.class` and `java -cp . Test`
 - `jmap -dump:file=hex <pid> && jhat hex` and browse at http://localhost:7000;
 cannot find any reference to `test` (it is not an object and just an instance of `class Z`)
@@ -188,4 +186,6 @@ and `jhat hex` has the object of the `java.lang.Thread` of main (0x76ab05c40)
 - `java.lang.Thread` has a native method `start0`
 which invokes hotspot method of `JVM_StartThread` (hotspot/src/share/vm/prims/jvm.cpp),
 there is a class `JavaThread` may contain the memory structure for local variables in thread stack.
-
+- `Java HotSpot Serviceability Agent` can print detailed stack frame.
+It is possible to find the address of a local variable.
+See alos: http://stackoverflow.com/questions/38931255/change-variable-value-in-jvm-with-gdb/38947442#38947442

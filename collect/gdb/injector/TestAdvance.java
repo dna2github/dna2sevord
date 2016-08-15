@@ -1,4 +1,4 @@
-public class Test {
+public class TestAdvance {
   public static void main(String[] args) {
     boolean test = true;
     while (test) {
