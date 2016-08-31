@@ -14,6 +14,10 @@ func (w *Walker) SetText(text string) {
    w.Cursor = 0
 }
 
+func (w *Walker) EOF () bool {
+   return w.Cursor >= w.N || w.Cursor < 0
+}
+
 func (w *Walker) IsStopper (stop rune) bool {
    for _, v := range *w.Stops {
       if v == stop {
@@ -30,7 +34,7 @@ func (w *Walker) Next () bool {
    i := w.Cursor
    for {
       if i >= w.N {
-         w.Stop = 0
+         w.Stop = '\x00'
          break
       }
       w.Stop = w.Text[i]
@@ -45,30 +49,8 @@ func (w *Walker) Next () bool {
 }
 
 func (w *Walker) ParseString (escape bool) bool {
-   origin_stops := w.Stops
-   pair := w.Stop
-   update_stops := []rune{}
-   if escape {
-     update_stops = []rune{pair, '\\'}
-   } else {
-     update_stops = []rune{pair}
-   }
-   w.Stops = &update_stops
-   start := w.Cursor
-   for {
-      if !w.Next() {
-         break
-      }
-      if w.Stop == pair ||  w.Cursor >= w.N || w.Cursor <= 0 {
-         break
-      }
-      // if stop == makrEscape {
-      w.Cursor += 2
-      // }
-   }
-   w.Token = string(w.Text[start:w.Cursor - 1])
-   w.Stops = origin_stops
-   return true
+   pair := string(w.Stop)
+   return w.ParseLongString(pair, pair, escape)
 }
 
 func (w *Walker) ParseLongString (start, end string, escape bool) bool {
