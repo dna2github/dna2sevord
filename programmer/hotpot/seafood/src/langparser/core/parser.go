@@ -8,7 +8,7 @@ type Walker struct {
    Cursor, N int
 }
 
-func (w *Walker) SetText(text string) {
+func (w *Walker) SetText (text string) {
    w.Text = []rune(text)
    w.N = len(w.Text)
    w.Cursor = 0
@@ -98,7 +98,7 @@ func (w *Walker) ParseLongString (start, end string, escape bool) bool {
          w.Cursor += 1
       }
       if '\x00' == w.Stop || w.Cursor >= w.N || w.Cursor <= 0 {
-         end_index = w.Cursor
+         end_index = w.N
          break
       }
    }
