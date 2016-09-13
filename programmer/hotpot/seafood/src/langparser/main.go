@@ -53,16 +53,16 @@ func java_c_javascript_block (walker *core.Walker) (state rune, last string) {
 
 func main () {
    stops := flag.String("stops", "\n\t `~!@#$%^&*()-+=_{}[]|\\:;'\"<>,./?", "Language Word Stopper")
-   stops_rune := []rune(*stops)
    //text := flag.String("text", "This is a test.", "Raw Text")
    flag.Usage = usage
    flag.Parse()
    flag.Args()
 
-   walker := core.Walker{&stops_rune, []rune(""), "", '\x00', 0, 0}
-   reader := bufio.NewReader(os.Stdin)
-   buffer := make([]byte, 0)
-   tmpbuf := make([]byte, BUF_SIZE)
+   stops_rune := []rune(*stops)
+   walker     := core.Walker{&stops_rune, []rune(""), "", '\x00', 0, 0}
+   reader     := bufio.NewReader(os.Stdin)
+   buffer     := make([]byte, 0)
+   tmpbuf     := make([]byte, BUF_SIZE)
    for {
       size, err := reader.Read(tmpbuf)
       if size == 0 {

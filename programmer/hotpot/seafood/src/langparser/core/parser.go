@@ -104,6 +104,7 @@ func (w *Walker) ParseLongString (start, end string, escape bool) bool {
    }
    w.Token = string(w.Text[start_index:end_index])
    w.Stops = origin_stops
+   w.Cursor = end_index + end_n
    return true
 }
 
