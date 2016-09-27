@@ -7,9 +7,12 @@ Xterm 256 Color: [origin](https://upload.wikimedia.org/wikipedia/en/1/15/Xterm_2
 ### GDB
 
 GDB Debug for NodeJS/V8 [origin](https://gist.github.com/ofrobots/0bdcab89771221ace68d)
+
 ref: [https://github.com/v8/v8/wiki/GDB-JIT-Interface](https://github.com/v8/v8/wiki/GDB-JIT-Interface)
 
-### ACO for Shortest Path
+### Algorithm
+
+#### ACO for Shortest Path
 
 Basic Ant Colony Optimization for Shortest Path.
 
@@ -26,3 +29,11 @@ The perofrmance is not good, especially since each ant moves with seeing one for
                \            \
                 (visible)    (invisible)
 ```
+
+### Machine Leraning
+
+#### Recurrent Nerual Network for adding small integer numbers
+
+ref: [https://iamtrask.github.io/2015/11/15/anyone-can-code-lstm/](https://iamtrask.github.io/2015/11/15/anyone-can-code-lstm/)
+
+The origin code is written in Python with NumPy. The new implementation is in Golang without 3rd lib.
