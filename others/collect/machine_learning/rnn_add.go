@@ -240,6 +240,22 @@ func (rnn *RecurrentNerualNetwork) Train(in *SimpleMatrix, out *SimpleMatrix) fl
    return err
 }
 
+func (rnn *RecurrentNerualNetwork) Predict (in *SimpleMatrix) *SimpleMatrix {
+   n   := in.N
+   layer_1_values := make([]*SimpleMatrix, 0)
+   layer_1_values = append(layer_1_values, NewSimpleMatrix(1, rnn.HiddenDim))
+   current := NewSimpleMatrix(1, in.N)
+   for i := 0; i < n; i++ {
+      X := in.Col(in.N - i - 1).T()
+      layer_1 := X.Dot(rnn.Synapse0).Add(layer_1_values[len(layer_1_values) - 1].Dot(rnn.SynapseH), 1, 1).Map(sigmoid)
+      layer_1_values = append(layer_1_values, layer_1)
+      layer_2 := layer_1.Dot(rnn.Synapse1).Map(sigmoid)
+      current.Data[0][i] = layer_2.Data[0][0]
+   }
+   return current
+
+}
+
 func (rnn *RecurrentNerualNetwork) Dump () {
    fmt.Println(rnn)
 }
@@ -279,12 +295,12 @@ func decodeNum (bits []int) int {
 }
 
 func main () {
-   rnn := NewRecurrentNerualNetwork(0.1, 2, 16, 1)
+   rnn := NewRecurrentNerualNetwork(0.2, 2, 16, 1)
    rnn.Synapse0.FillRandom(-1, 1)
    rnn.Synapse1.FillRandom(-1, 1)
    rnn.SynapseH.FillRandom(-1, 1)
    binary := prepareBinaryMap()
-   for i := 1; i <= 20000; i++ {
+   for i := 1; i <= 50000; i++ {
       a_int := rand.Intn(128)
       b_int := rand.Intn(128)
       c_int := a_int + b_int
@@ -307,4 +323,24 @@ func main () {
          fmt.Println("------------")
       }
    }
+
+   error := 0
+   times := 50000
+   for i := 1; i <= times; i++ {
+      a_int := rand.Intn(128)
+      b_int := rand.Intn(128)
+      c_int := a_int + b_int
+      a := binary[a_int]
+      b := binary[b_int]
+      in := NewSimpleMatrix(2, 8)
+      for j := 0; j < 8; j++ {
+         in.Data[0][j] = float64(a[j])
+         in.Data[1][j] = float64(b[j])
+      }
+      out := rnn.Predict(in)
+      if (decodeNum(convertBits(out.MirrorM())) != c_int) {
+         error ++
+      }
+   }
+   fmt.Println("Test Error:", (float64(error)/float64(times)) * 100.0, "%");
 }
