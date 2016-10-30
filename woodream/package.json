@@ -1,0 +1,14 @@
+{
+  "name": "woodream",
+  "version": "0.1.0",
+  "description": "in the deep of woods, fog blind roads; I wander into that kind of dream.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test\" && exit 1"
+  },
+  "author": "Seven Lju",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
