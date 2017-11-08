@@ -1,0 +1,10 @@
+docker run gitlab-ce
+
+vi /etc/gitlab/gitlab.rb
+gitlab-ctl reconfigure
+
+ldap related:
+/opt/gitlab/embedded/service/gitlab-rails/lib/gitlab/ldap/authentication.rb
+/opt/gitlab/embedded/service/gem/ruby/2.1.0/gems/gitlab_omniauth-ldap-1.2.1/lib/omniauth/strategies/ldap.rb
+/opt/gitlab/embedded/service/gem/ruby/2.1.0/gems/gitlab_omniauth-ldap-1.2.1/lib/omniauth-ldap/adaptor.rb
+/opt/gitlab/embedded/service/gitlab-rails/lib/gitlab/o_auth/user.rb
