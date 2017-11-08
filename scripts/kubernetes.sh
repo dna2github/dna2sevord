@@ -1,4 +1,4 @@
-nimbus deploy ovf --memory=512 --cpus=1 kube-st0 /ovf/tcentos/tcentos.ovf
+nimbus deploy ovf --memory=512 --cpus=1 kube-st0 /https/rdtoolutils/ovf/tcentos/tcentos.ovf
 
 - Install docker
 yum install -y yum-utils device-mapper-persistent-data lvm2
@@ -8,10 +8,10 @@ yum install -y docker-ce
 systemctl start docker
 docker run hello-world
 
-- Install KubeCtrl
-cd /usr/local/bin
-curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-chmod +x kubectl
+- Install Kubernetes
+# cd /usr/local/bin
+# curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+# chmod +x kubectl
 
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
