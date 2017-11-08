@@ -1,3 +1,5 @@
+nimbus deploy ovf --memory=512 --cpus=1 kube-st0 /ovf/tcentos/tcentos.ovf
+
 - Install docker
 yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
