@@ -1,0 +1,83 @@
+#!/usr/bin/python
+# usage: pkg-config --libs opencv
+
+import sys
+import subprocess
+import re
+
+# import os
+# os.environ.get('PKG_CONFIG_PATH', None)
+PKG_CONFIG_PATH = '/x/lab/lib'
+
+def load_pkg(text):
+   vars = {}
+   flags = {}
+   text = text.split('\n')
+   state = 0
+   for line in text:
+      if len(line) == 0:
+         continue
+      elif line[0] == '#':
+         continue
+      elif '=' in line:
+         p = line.index('=')
+         var = line[0:p]
+         val = line[p+1:]
+         vars[var] = val
+      elif ': ' in line:
+         p = line.index(': ')
+         flag = '--' + line[0:p].lower()
+         val = line[p+2:]
+         flags[flag] = val
+   return {
+      'vars': vars, 'flags': flags
+   }
+
+def find_pkg(name, dir=PKG_CONFIG_PATH):
+   try:
+      # get last line; e.g. nettle-2.5 nettle-3.3 both has nettle.pc last_line(find(nettle.pc))
+      output = subprocess.check_output('find /x/lab/lib -name "{0}.pc" -type f'.format(name), shell=True)
+      env = None
+      output = output.split('\n')
+      if len(output[-1]) == 0:
+         output.pop()
+      output = output[-1]
+      
+      with open(output, 'r') as f:
+         env = load_pkg(f.read())
+      return env
+   except:
+      return {'vars': {}, 'flags': {}}
+
+def make_features(env, features=['--cflags', '--libs']):
+   if len(features) == 0:
+      features = ['--cflags', '--libs']
+   return ' '.join(list(map(lambda x: expand_var(env, env['flags'].get(x, '')), features)))
+
+def expand_var(env, val):
+   m = {}
+   v = list(set(re.findall(r'\${[^ ]*}', val)))
+   for item in v:
+      item_name = item[2:-1] # ${...}
+      m[item] = expand_var(env, env['vars'].get(item_name, ''))
+      val = val.replace(item, m[item])
+   return val
+   
+
+def main():
+   pkg_name = sys.argv[-1]
+   features = sys.argv[1:-1]
+   if '--version' in features:
+      print('TODO: print fake version')
+      exit(1)
+   elif '--help' in features:
+      print('TODO: print fake help')
+      exit(1)
+   env = find_pkg(pkg_name)
+   if '--list-all' in features:
+      features = list(env['flags'].keys())
+   print(make_features(env, features))
+
+
+if __name__ == '__main__':
+   main()
