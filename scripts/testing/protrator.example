@@ -1,0 +1,15 @@
+{
+   "framework": "jasmine",
+   "seleniumAddress": "http://localhost:4444/wd/hub",
+   "allScriptsTimeout": 60000,
+   "specs": ["e2e/*Spec.js"],
+   "capabilities": {
+      "browserName": "chrome",
+      "chromeOptions": {
+         "args": [ "--disable-gpu", "--no-sandbox" ]
+      }
+   },
+   "jasmineNodeOpts": {
+      "defaultTimeoutInterval": 300000
+   }
+}
