@@ -6,3 +6,4 @@ bower_components
 *.swp
 *.class
 *.o
+.vscode
