@@ -1,0 +1,28 @@
+ElasticSearch
+
+- http://blog.csdn.net/jingkyks/article/details/41348613 (elasticsearch之index模块)
+- http://blog.csdn.net/laoyang360/article/details/77412668 (ES技术团队划重点 | ES5.X，你必须知道的API和相关技巧)
+- https://www.jianshu.com/p/9b872a41d5bb (Elasticsearch 5.x 源码分析（5）segments merge 流程分析)
+- https://www.jianshu.com/p/be52d54972e2?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation (==ElasticSearch优化系列(1-7)：集群节点规划)
+- https://hacpai.com/article/1512990272091 (Elasticsearch Pipeline 详解)
+- http://elasticsearch-cheatsheet.jolicode.com/#es5
+- https://github.com/elastic/elasticsearch-mapper-attachments/tree/master/src/main/java/org/elasticsearch/mapper/attachments
+- https://github.com/google/guice/wiki/GettingStarted
+- https://github.com/elastic/elasticsearch
+- https://github.com/apache/lucene-solr
+- http://tika.apache.org/ (Apache Tika - a content analysis toolkit)
+- https://www.elastic.co/blog/found-elasticsearch-internals
+- http://netty.io/wiki/
+- https://www.elastic.co/blog/found-java-clients-for-elasticsearch
+- https://github.com/medcl/elasticsearch-analysis-ik
+- https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html#native-java-scripts
+- https://www.elastic.co/guide/en/elasticsearch/guide/current/scoring-theory.html
+
+Others
+
+- https://www.ixquick.com/
+- https://duckduckgo.com/
+- http://www.hotbot.com/
+- http://www.lycos.com/
+- http://www.exalead.com/search/
+- https://en.wikipedia.org/wiki/YaCy

@@ -1,0 +1,127 @@
+Common Command
+
+- https://www.sslshopper.com/article-most-common-openssl-commands.html
+- http://man.lupaworld.com/content/manage/vi/doc/filetype.html#new-filetype
+- http://man.lupaworld.com/content/manage/vi/doc/syntax.html
+- http://www.my-guides.net/en/guides/linux/how-to-enable-command-autocomplete-by-searching-history-in-linux
+
+Toolchain
+
+- https://buildroot.org/
+- https://www.gnu.org/software/global/links.html
+
+Tools
+
+- https://alternativeto.net/software/bugzilla/
+- https://serversforhackers.com/an-ansible-tutorial
+- https://designcloud.mockflow.com/#Wireframe
+- http://osxr.org/
+- https://www.desmos.com/calculator
+- https://www.gliffy.com/
+- https://www.draw.io/
+
+Vulnerability
+
+- https://technet.microsoft.com/en-us/library/security/ms17-010.aspx (smb vulnerability)
+- http://bbs.pediy.com/showthread.php?t=167398 (iOS平台的应用程序调试与分析)
+- http://newandroidbook.com/index.php (Android Internals::A Confectioner's Cookbook)
+- http://newosxbook.com/index.php ( MacOS and *OS Internals)
+
+KVM
+
+- http://www.oenhan.com/kvm-src-1 (1,2,3,4)
+- http://www.oenhan.com/kvm-src-2-vm-run
+- http://www.oenhan.com/kvm-src-3-cpu
+- http://www.oenhan.com/kvm-src-4-mem
+
+Container
+
+- https://severalnines.com/blog/installing-kubernetes-cluster-minions-centos7-manage-pods-services
+- https://www.ustack.com/blog/kubernetes1/
+- https://github.com/docker/distribution
+- https://github.com/docker/distribution/blob/4c4112bdcf57a2badf5b74fa0c3cb7b578016371/configuration/configuration_test.go
+- https://docs.docker.com/registry/configuration/
+- https://docs.docker.com/registry/deploying/
+- http://www.tuicool.com/articles/7vQVFz7 (Flannel and Docker on Fedora)
+- https://www.flockport.com/experimenting-with-overlayfs-and-lxc/
+
+Database
+
+- http://www.butleranalytics.com/20-free-and-open-source-graph-database/
+- https://graphql.org.cn/code.html
+- http://docs.sqlalchemy.org/en/latest/core/event.html
+- http://docs.sqlalchemy.org/en/latest/orm/events.html
+- http://www.linuxidc.com/Linux/2012-06/64080.htm (PostgreSQL集群方案hot standby 安装和测试)
+- https://www.postgresql.org/docs/9.4/static/wal-internals.html
+- http://michael.otacoo.com/postgresql-2/wal-reader-facility/
+- https://mariadb.com/kb/en/mariadb/spider-storage-engine-overview/
+- https://documentation.play-sql.com/display/PUBLIC/How+to+access+foreign+databases+from+Postgres
+- https://wiki.postgresql.org/wiki/Foreign_data_wrappers
+- http://sqlrelay.sourceforge.net/sqlrelay/
+- https://en.wikipedia.org/wiki/Graph_database
+
+Framework
+
+- http://electron.atom.io/apps/
+
+Networks
+
+- https://github.com/John-Lin/OVS-Cheat-Sheet
+- https://jreypo.wordpress.com/tag/open-vswitch/
+- http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/
+- http://docs.openvswitch.org/en/latest/howto/tunneling/
+- http://ct2wj.com/2016/02/28/shadowsocks-android-source-code-analysis/
+- http://www.cnblogs.com/nightwatcher/p/3476742.html (基于TCP的NAT子网穿透实验)
+- http://blog.csdn.net/majieyue/article/details/7888400 (open vswitch研究：ovs的安装和使用)
+
+Language
+
+- https://isocpp.org/ (News, Status & Discussion about Standard C++)
+- http://www.thefreecountry.com/sourcecode/grammars.shtml
+- http://eli-project.sourceforge.net/c_html/c.html#m43 (ANSI C Specification)
+- http://www.cs.man.ac.uk/~pjj/bnf/c_syntax.bnf
+- http://docs.oracle.com/javase/specs/jls/se7/html/index.html
+- http://www.nongnu.org/hcb/ (C++ BNF)
+- http://www.csci.csusb.edu/dick/c++std/cd2/gram.html
+- http://zeroturnaround.com/rebellabs/a-month-of-jvm-languages-groovy-ceylon-kotlin-and-scala/
+- http://es6-features.org/#Constants
+- http://wowubuntu.com/markdown/
+- http://www.cnblogs.com/hongten/p/hongten_python_sqlite3.html
+- https://www.appneta.com/blog/introduction-to-javas-threadlocal-storage/
+- http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/types.html
+- http://xdprof.sourceforge.net/doxygen/jni_8h-source.html
+- https://docs.python.org/2/c-api/init.html
+- https://github.com/zbentley/gdb-inject-perl
+- http://eniramltd.github.io/devblog/2014/11/19/reactive_dataflow_programming_in_python_part_2.html
+- https://en.wikipedia.org/wiki/Objective-C
+- https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html
+- http://www.huyng.com/posts/python-performance-analysis/
+- http://blog.nella.org/?p=849 (A trip down the (split) rabbithole for Go debugging)
+- https://gobyexample.com/
+- https://talks.golang.org/2014/organizeio.slide#1
+
+Server
+
+- http://blog.csdn.net/jollyjumper/article/details/8977596 (nginx webdav配置)
+- https://www.kernel.org/pub/software/scm/git/docs/howto/setup-git-server-over-http.txt
+- https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/install/installation.md
+
+Distributed System
+
+- http://thesecretlivesofdata.com/raft/
+- http://lukebond.ghost.io/service-discovery-with-etcd-and-node-js/
+- http://redis.io/topics/lru-cache
+- http://redis.io/topics/config
+
+Linux
+
+- http://www.linux.org/threads/intro-to-snapshot-cloning.4119/
+- http://www.ibm.com/developerworks/cn/linux/1306_qinzl_squashfs/
+
+Router
+
+- http://blog.chinaunix.net/uid-25073805-id-2984335.html ( TL-WR841N刷机 可刷OpenWrt DD-Wrt)
+
+Bootstrap
+
+- http://www.codeproject.com/Articles/45788/The-Real-Protected-Long-mode-assembly-tutorial-for

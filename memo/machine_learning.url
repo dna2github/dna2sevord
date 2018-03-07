@@ -1,0 +1,90 @@
+NN
+
+- http://www.tensorfly.cn/tfdoc/tutorials/deep_cnn.html
+- https://www.zhihu.com/question/34681168 (CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的内部网络结构有什么区别？)
+- https://iamtrask.github.io/2015/11/15/anyone-can-code-lstm/
+- http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+- https://cs.stanford.edu/people/karpathy/recurrentjs/
+- http://karpathy.github.io/2015/05/21/rnn-effectiveness/
+- http://iamtrask.github.io/2015/07/12/basic-python-network/
+- http://people.compute.dtu.dk/~abll/blog/simple_cnn/
+- http://deeplearning.net/tutorial/rnnslu.html
+- http://deeplearning.net/tutorial/lstm.html
+- http://nicodjimenez.github.io/2014/08/08/lstm.html
+- https://gist.github.com/karpathy/587454dc0146a6ae21fc
+- https://gist.github.com/karpathy/d4dee566867f8291f086
+- https://github.com/nicodjimenez/lstm/blob/master/lstm.py
+
+CRF
+
+- http://cis.sjtu.edu.cn/index.php/Python_crf
+- http://alias-i.com/lingpipe/demos/tutorial/crf/read-me.html
+- https://github.com/timvieira/crf/blob/master/crf/crf.py
+- http://www.chokkan.org/software/crfsuite/
+- https://taku910.github.io/crfpp/
+- http://blog.echen.me/2012/01/03/introduction-to-conditional-random-fields/
+- http://blog.csdn.net/golden1314521/article/details/46523141 (条件随机场（CRF）原理和实现)
+- http://www.robots.ox.ac.uk/~szheng/crfasrnndemo/ (Semantic Image Segmentation Live Demo)
+
+Source code classification
+
+- http://blog.aylien.com/source-code-classification-using-deep-learning/
+
+GPU set
+
+- https://blog.lofyer.org/pass-host-gpu-to-guest-via-qemu-ncursescurses/
+- https://linuxserver.io/2017/04/28/how-to-setup-vfio-gpu-passthrough-using-ovmf-and-kvm-on-arch-linux/
+- https://zhuanlan.zhihu.com/p/29433627 (GPU + Docker)
+- https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF
+
+MXNet
+
+- http://mxnet.incubator.apache.org/tutorials/
+
+NLP
+
+- https://blog.bosonnlp.com/c16a60c5b591.html (word split comparsion)
+- http://licstar.net/archives/328 (Deep Learning in NLP （一）词向量和语言模型)
+- http://www.cnblogs.com/chenbjin/p/5644457.html (word2vec + transE 知识表示模型)
+- http://www.anc.org/data/oanc/annotations/ (The OANC data is distributed with the following annotations)
+- http://www.anc.org/data/masc/corpus/ (MASC is a balanced subset of 500K words of written texts and transcribed speech drawn primarily from the Open American National Corpus (OANC). The OANC is a 15 million word (and growing) corpus of American English produced since 1990, all of which is in the public domain or otherwise free of usage and redistribution restrictions.)
+- http://www.anc.org/
+- http://linguistics.stackexchange.com/questions/4232/english-text-corpus-for-download
+- https://corplinguistics.wordpress.com/2012/02/14/chat-room-corpus/
+- https://aws.amazon.com/datasets/the-westburylab-usenet-corpus/
+- http://literatureproject.com/around-the-world/index.htm
+- http://www.jinyongwang.com/
+- https://www.textrazor.com/ (Extract Meaning from your Text.)
+- http://norvig.com/spell-correct.html (How to Write a Spelling Corrector)
+- http://cogcomp.cs.illinois.edu/page/demo_view/srl (Semantic Role Labeling Demo)
+- http://www.cs.cmu.edu/~nasmith/nlp-cl.html
+- http://www.conversational-technologies.com/nldemos/nlDemos.html (Online Natural Language Processing Demos)
+- http://www.cs.jhu.edu/~jason/465/ (Natural Language Processing)
+- http://www.cs.cornell.edu/courses/cs775/2001sp/ (CS 775: Seminar in Natural Language Understanding, Spring 2001)
+- http://textanalysisonline.com/
+- http://stanfordnlp.github.io/CoreNLP/
+
+Image
+
+- https://github.com/robwhess/opensift/blob/master/src/sift.c
+- http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_feature2d/py_fast/py_fast.html
+- https://cmusatyalab.github.io/openface/
+- http://detexify.kirelabs.org/classify.html
+- http://blog.csdn.net/abcjennifer/article/details/7639681
+
+Dataset
+
+- https://archive.ics.uci.edu/ml/datasets.html
+- http://archive.ics.uci.edu/ml/
+- http://www.cyc.com/ (CYC: LOGICAL REASONING WITH THE WORLD'S LARGEST KNOWLEDGE BASE)
+- https://github.com/EBISPOT/OLS
+- http://www.ebi.ac.uk/ols/beta/index (EMBL-EBI Ontology Lookup Service.)
+
+Others
+
+- https://www.matroid.com/blog/post/scaled-ml-2017-slides-and-pictures
+- https://github.com/josephmisiti/awesome-machine-learning
+- https://medium.com/@ageitgey/machine-learning-is-fun-80ea3ec3c471#.stjhoxt36
+- http://www.cedar.buffalo.edu/~srihari/CSE574/ (Introduction to Machine Learning Course)
+- https://en.wikipedia.org/wiki/List_of_numerical_libraries
+

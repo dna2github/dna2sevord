@@ -1,0 +1,80 @@
+HTML 5
+
+- http://www.html5rocks.com/en/tutorials/dnd/basics/
+- http://www.w3schools.com/html/html5_draganddrop.asp
+- https://www.html5rocks.com/en/tutorials/file/dndfiles/
+
+CSS
+
+- https://github.com/daneden/animate.css
+- https://github.com/FortAwesome/Font-Awesome
+
+SVG
+
+- http://www.w3schools.com/svg/
+- http://tutorials.jenkov.com/svg/text-element.html
+- http://tutorials.jenkov.com/svg/mask.html
+- http://tutorials.jenkov.com/svg/line-element.html
+- https://bl.ocks.org/mbostock/950642 (Force Layout)
+- https://bl.ocks.org/mbostock/3750558 (Sticky Force Layout)
+- https://github.com/mbostock/d3/wiki/Force-Layout
+
+Web Server
+
+- https://github.com/websockets/ws
+- https://github.com/expressjs/multer/issues/292 (ECONNRESET with large files)
+- https://github.com/expressjs/multer
+- http://stackoverflow.com/questions/11744975/enabling-https-on-express-js
+- http://www.fullstackpython.com/websockets.html
+- http://stackoverflow.com/questions/18307131/how-to-create-https-tornado-server
+- http://stackoverflow.com/questions/13471115/how-to-handle-a-request-with-https-protocol-in-tornado
+- http://www.codestance.com/tutorials-archive/python-tornado-web-server-with-websockets-part-i-441
+- http://twistedmatrix.com/documents/12.0.0/core/howto/ssl.html
+- https://twistedmatrix.com/documents/14.0.2/core/howto/ssl.html
+- http://www.aosabook.org/en/twisted.html
+- http://sparkjava.com/
+- http://thenewstack.io/building-a-web-server-in-go/
+- https://twistedmatrix.com/documents/15.0.0/web/howto/using-twistedweb.html
+- https://medium.com/@tschundeee/express-vs-flask-vs-go-acc0879c2122#.klqjot94x
+
+Angular
+
+- http://stackoverflow.com/questions/32190445/hot-and-cold-observables-are-there-hot-and-cold-operators/34669444#34669444
+- https://stackoverflow.com/questions/34849873/what-are-the-semantics-of-different-rxjs-subjects/34860777#34860777
+- http://blog.thoughtram.io/angular/2015/07/06/even-better-es5-code-for-angular-2.html
+- https://auth0.com/blog/2015/10/15/angular-2-series-part-3-using-http/
+
+WebRTC
+
+- http://www.html5rocks.com/en/tutorials/webrtc/basics/
+- https://w3c.github.io/webrtc-pc/
+- https://developer.mozilla.org/en-US/docs/Web/Guide/API/WebRTC/Peer-to-peer_communications_with_WebRTC
+- https://developer.mozilla.org/en-US/docs/Web/Guide/API/WebRTC
+- https://github.com/webrtc/samples/blob/gh-pages/src/content/capture/canvas-pc/js/main.js
+- https://webrtc.github.io/samples/src/content/capture/canvas-pc/
+- https://webrtc.org/
+- https://github.com/samdutton/simpl/blob/gh-pages/rtcdatachannel/js/main.js
+
+Browser
+
+- https://developer.mozilla.org/en-US/docs/Web/API
+- http://yuncode.net/article/a_512715c7a368c35 (iPhone与Android手机 各个型号的UserAgent)
+
+Design
+
+- http://www.ui.cn/detail/119449.html (翻译】Google视觉资产指南-上)
+- http://www.ui.cn/detail/118611.html (读书笔记-设计师要懂心理学)
+- http://www.ui.cn/detail/119151.html (微交互：好产品的秘密)
+- http://www.vischeck.com/examples/ (Color Vision Simulator Examples)
+- http://www.uimaker.com/uimakerdown/bstemplate/82645.html (最新精美后台管理系统模版html源文件+PSD源文件下载)
+- https://uxplanet.org/microinteractions-the-secret-to-great-app-design-4cfe70fbaccf
+- http://topic.ui.cn/
+- http://www.uimaker.com/
+- http://www.tagxedo.com/gallery.html
+- http://www.zcool.com.cn/work/ZMjg5MDg1Ng==.html
+
+Others
+
+- http://www.cnblogs.com/sld666666/archive/2010/06/25/1765510.html (利用Graphviz 画结构图)
+- https://developers.google.com/web/updates/
+- https://imququ.com/post/how-to-decrypt-https.html
