@@ -1,0 +1,4 @@
+meet that `g$it clone xxxxxxxxxxx` reports `Peer reports incompatible or unsupported protocol version.`
+
+- Resolution: yum update -y nss curl libcurl
+
