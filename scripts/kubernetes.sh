@@ -31,7 +31,9 @@ systemctl enable kubelet && systemctl start kubelet
 
 [master]
 kubeadm init
+kubeadm init --pod-network-cidr 10.3.0.0/16
 # wait for message that show `kubeadm join --token <token>`
+sysctl net.bridge.bridge-nf-call-iptables=1
 [addition/network] kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.8.0/Documentation/kube-flannel.yml
 
 [slave]
