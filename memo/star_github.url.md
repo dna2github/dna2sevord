@@ -147,3 +147,6 @@ Tesseract Open Source OCR Engine
 Screenshots with JavaScript
 
 - https://github.com/niklasvh/html2canvas
+
+deep inside with NodeJS
+- https://github.com/nswbmw/node-in-debugging
