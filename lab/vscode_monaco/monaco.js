@@ -44,3 +44,14 @@ decorationId = ui.editor.api.deltaDecorations([], [
          });
       }
    };
+
+
+
+https://github.com/Microsoft/vscode/blob/master/src/vs/editor/browser/viewParts/selections/selections.ts (SelectionsOverlay)
+https://github.com/Microsoft/vscode/blob/master/src/vs/editor/browser/view/viewImpl.ts (View.createViewParts)
+https://github.com/Microsoft/vscode/blob/master/src/vs/editor/browser/view/dynamicViewOverlay.ts (dynamicViewOverlay)
+https://github.com/Microsoft/vscode/blob/master/src/vs/editor/common/viewModel/viewEventHandler.ts (viewEventHandler)
+SelectionsOverlay implements dynamicViewOverlay
+dynamicViewOverlay, View implements viewEventHandler
+ui.editor.api._modelData.view.viewParts
+
