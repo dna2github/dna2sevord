@@ -161,7 +161,7 @@ async function indexCreateOrUpdate(client, id, index, body) {
          i ++;
       }
    } catch(err) {
-      if (err.meta && err.meta.status === 404) {
+      if (err.meta && err.meta.statusCode === 404) {
          exists = false;
       } else {
          console.log('[e]', id);
