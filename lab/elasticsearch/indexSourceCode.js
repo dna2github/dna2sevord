@@ -99,7 +99,12 @@ async function getFileHash(filename) {
 
 async function getFileSymbols(filename) {
    const cmd = `${BIN_CTAGS} --extras=-fq --file-scope=yes --excmd=mix --fields=Klns --output-format=json --sort=no '${filename}'`;
-   const symbolRaw = await sh(cmd);
+   let symbolRaw = null;
+   try {
+      symbolRaw = await sh(cmd);
+   } catch(err) {
+      return [];
+   }
    const symbolList = symbolRaw.stdout.split('\n').map((line) => {
       if (!line) return null;
       try {
@@ -191,6 +196,7 @@ async function indexSymbols(client, project, item) {
       symbolItem.metadata.proejct = project;
       symbolItem.metadata.filepath = relative_filename;
       await indexCreateOrUpdate(client, Buffer.from(`${relative_filename}|${symbolItem.symbol}L${symbolItem.metadata.lineNumber}.${symbolItem.metadata.column}`).toString('base64'), 'vcode_symbol', {
+         path: relative_filename,
          metadata: symbolItem.metadata,
          symbol: symbolItem.symbol,
       });
@@ -257,6 +263,7 @@ async function createOrTouchIndexes(client) {
                },
                mappings: {
                   properties: {
+                     path: { type: 'keyword', index: true, },
                      metadata: { type: 'object', enabled: false, },
                      symbol: { type: 'text', analyzer: 'vcode-3gram' },
                   },
