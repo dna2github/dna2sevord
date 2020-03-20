@@ -1,7 +1,8 @@
-const i_es = require('@elastic/elasticsearch');
 const i_fs = require('fs');
 const i_path = require('path');
+const i_crypto = require('crypto');
 const i_exec = require('child_process').exec;
+const i_es = require('@elastic/elasticsearch');
 
 const base = i_path.resolve(process.argv[2] || '.');
 const ignore = process.argv[3]?process.argv[3].split(','):[];
@@ -142,12 +143,34 @@ async function getFileList(dirpath, filterFn) {
 }
 
 async function indexCreateOrUpdate(client, id, index, body) {
-   const r = await client.exists({
-      id: id, index: index, _source: false,
-   });
-   if (r.body === true) {
+   let hid = idHash(id);
+   let r, i = 0, exists = false;
+   try {
+      r = await client.get({
+         id: hid, index: index, _source: ['path'],
+      });
+      while(true) { // wow, infinite
+         if (r.body._source.path === id) {
+            exists = true;
+            break;
+         }
+         hid = `${id}+${i}`;
+         r = await client.get({
+            id: hid, index: index, _source: ['path'],
+         });
+         i ++;
+      }
+   } catch(err) {
+      if (err.meta && err.meta.status === 404) {
+         exists = false;
+      } else {
+         console.log('[e]', id);
+         throw err;
+      }
+   }
+   if (exists) {
       await client.update({
-         id: id,
+         id: hid,
          index: index,
          _source: false,
          refresh: true,
@@ -155,11 +178,15 @@ async function indexCreateOrUpdate(client, id, index, body) {
       });
    } else {
       await client.create({
-         id: id,
+         id: hid,
          index: index,
          refresh: true,
          body: body
       });
+   }
+
+   function idHash(id) {
+      return i_crypto.createHash('sha256').update(id, 'utf8').digest('hex');
    }
 }
 
@@ -178,7 +205,7 @@ async function indexFile(client, project, item) {
       lang = await getFileLanguage(filename);
    }
    console.log(`    Hash=${hash} Language=${lang}`);
-   await indexCreateOrUpdate(client, Buffer.from(relative_filename).toString('base64'), 'vcode_file', {
+   await indexCreateOrUpdate(client, relative_filename, 'vcode_file', {
       hash: hash,
       lang: lang,
       project: project,
@@ -195,7 +222,8 @@ async function indexSymbols(client, project, item) {
       const symbolItem = symbolList[i];
       symbolItem.metadata.proejct = project;
       symbolItem.metadata.filepath = relative_filename;
-      await indexCreateOrUpdate(client, Buffer.from(`${relative_filename}|${symbolItem.symbol}L${symbolItem.metadata.lineNumber}.${symbolItem.metadata.column}`).toString('base64'), 'vcode_symbol', {
+      await indexCreateOrUpdate(client, `${relative_filename}|${symbolItem.symbol}${symbolItem.metadata.lineNumber}${symbolItem.metadata.column}`, 'vcode_symbol', {
+         project: project,
          path: relative_filename,
          metadata: symbolItem.metadata,
          symbol: symbolItem.symbol,
@@ -263,6 +291,7 @@ async function createOrTouchIndexes(client) {
                },
                mappings: {
                   properties: {
+                     project: { type: 'keyword', index: true, },
                      path: { type: 'keyword', index: true, },
                      metadata: { type: 'object', enabled: false, },
                      symbol: { type: 'text', analyzer: 'vcode-3gram' },
