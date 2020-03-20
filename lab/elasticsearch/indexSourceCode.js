@@ -11,6 +11,8 @@ const BIN_SHA256 = process.env.ES_SHA256 || '/usr/bin/sha256sum';
 const BIN_ENRY = process.env.ES_ENRY;
 
 async function main() {
+   const startTime = new Date();
+   console.log(startTime.toISOString());
    const client = new i_es.Client({
       node: 'http://127.0.0.1:9200',
       maxRetries: 5,
@@ -25,6 +27,8 @@ async function main() {
       await processDirectory(client, item.name, i_path.join(base, item.name));
    }
    await client.close();
+   const endTime = new Date();
+   console.log(endTime.toISOString());
 }
 
 function getFileStat(filename) {
@@ -32,16 +36,18 @@ function getFileStat(filename) {
 }
 
 async function sh(command) {
-   i_exec(command, (err, stdout, stderr) => {
-      if (err) return e(err);
-      r({ stdout, stderr });
+   return new Promise((r, e) => {
+      i_exec(command, (err, stdout, stderr) => {
+         if (err) return e(err);
+         r({ stdout, stderr });
+      });
    });
 }
 
 async function getFileLanguage(filename) {
    let lang = '';
-   if (BIN_ENTRY) {
-      const langRaw = await sh(`${BIN_ENRY -json '${filename}'}`);
+   if (BIN_ENRY) {
+      const langRaw = await sh(`${BIN_ENRY} -json '${filename}'`);
       try {
          const obj = JSON.parse(langRaw.stdout);
          if (obj.type === 'Text') {
@@ -52,13 +58,34 @@ async function getFileLanguage(filename) {
       } catch(err) {}
    }
    if (!lang) lang = guessFileLanguage(filename);
+   return lang;
 
    function guessFileLanguage(filename) {
-      switch(i_path.extname(filename)) {
+      switch(i_path.extname(filename).toLowerCase()) {
          case '.bazel': return 'python';
          case '.bzl': return 'python';
          case '.sc': return 'python';
          case '.vmodl': return 'java';
+         case '.py': return 'python';
+         case '.js': return 'javascript';
+         case '.ts': return 'typescript';
+         case '.sql': return 'sql';
+         case '.go': return 'golang';
+         case '.cpp': case '.hpp': case '.cc': case '.hh' :return 'c++';
+         case '.c': case '.h': return 'c';
+         case '.mm': case '.m': return 'objective-c/c++';
+         case '.rb': return 'ruby';
+         case '.css': return 'css';
+         case '.html': return 'html';
+         case '.cs': return 'c#';
+         case '.pl': return 'perl';
+         case '.sh': return 'shell';
+         case '.php': return 'php';
+         case '.s': return 'asm';
+         case '.xml': return 'xml';
+         case '.json': return 'json';
+         case '.yml': case '.yaml': return 'yaml';
+         case '.ini': return 'ini';
       }
       return '';
    }
@@ -81,13 +108,16 @@ async function getFileSymbols(filename) {
          return null;
       }
    }).filter((x) => !!x);
+
    const lines = i_fs.readFileSync(filename).toString().split('\n');
    for (let i = 0, n = symbolList.length; i < n; i++) {
       const item = symbolList[i];
-      const pattern = item.pattern;
       const line = lines[item.line - 1];
+      let pattern = item.pattern.substring(2, item.pattern.length - 2);
+      pattern = pattern = pattern.replace(/\\\\/g, '\\');
+      pattern = pattern.replace(/\\[/]/g, '/');
       const offset = pattern.split(item.name)[0].length;
-      const column = line.split(new RegExp(pattern))[0].length + offset;
+      const column = line.split(pattern)[0].length + offset;
       item.metadata = { lineNumber: item.line, column: column, kind: item.kind, language: item.language, scope: item.scope || '' };
       symbolList[i] = { symbol: item.name, metadata: item.metadata };
    }
@@ -106,6 +136,28 @@ async function getFileList(dirpath, filterFn) {
    });
 }
 
+async function indexCreateOrUpdate(client, id, index, body) {
+   const r = await client.exists({
+      id: id, index: index, _source: false,
+   });
+   if (r.body === true) {
+      await client.update({
+         id: id,
+         index: index,
+         _source: false,
+         refresh: true,
+         body: { doc: body }
+      });
+   } else {
+      await client.create({
+         id: id,
+         index: index,
+         refresh: true,
+         body: body
+      });
+   }
+}
+
 async function indexFile(client, project, item) {
    const filename = i_path.join(item.base, item.name);
    const relative_filename = filename.substring(base.length);
@@ -120,16 +172,13 @@ async function indexFile(client, project, item) {
       text = i_fs.readFileSync(filename).toString();
       lang = await getFileLanguage(filename);
    }
-   await client.create({
-      id: Buffer.from(relative_filename).toString('base64'),
-      index: 'vcode_file',
-      body: {
-         hash: hash,
-         lang: lang,
-         project: project,
-         path: relative_filename,
-         text: text
-      }
+   console.log(`    Hash=${hash} Language=${lang}`);
+   await indexCreateOrUpdate(client, Buffer.from(relative_filename).toString('base64'), 'vcode_file', {
+      hash: hash,
+      lang: lang,
+      project: project,
+      path: relative_filename,
+      text: text
    });
 }
 
@@ -141,13 +190,9 @@ async function indexSymbols(client, project, item) {
       const symbolItem = symbolList[i];
       symbolItem.metadata.proejct = project;
       symbolItem.metadata.filepath = relative_filename;
-      await client.create({
-         id: Buffer.from(`${relative_filename}|${symbolItem.symbol}`).toString('base64'),
-         index: 'vcode_file',
-         body: {
-            metadata: symbolItem.metadata,
-            symbol: symbolItem.symbol,
-         }
+      await indexCreateOrUpdate(client, Buffer.from(`${relative_filename}|${symbolItem.symbol}L${symbolItem.metadata.lineNumber}.${symbolItem.metadata.column}`).toString('base64'), 'vcode_symbol', {
+         metadata: symbolItem.metadata,
+         symbol: symbolItem.symbol,
       });
    }
 }
@@ -253,4 +298,4 @@ async function createOrTouchIndexes(client) {
    }
 }
 
-main().then(() => console.log('Done')).catch((err) => console.error(err, err && err.meta && err.meta.body || 'unknown'));
+main().then(() => console.log('Done')).catch((err) => console.error(err, err && err.meta && JSON.stringify(err.meta.body, null, 3) || 'unknown'));
