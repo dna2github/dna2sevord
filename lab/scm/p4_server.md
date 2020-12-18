@@ -15,6 +15,13 @@ p4 annotate -q <path>[#<revision>] (rev)
 p4 annotate -c -I -q <path>#<client> (cln)
 ```
 
+how to search:
+
+```
+p4 grep -n -e <regexp> <path>...
+e.g. p4 grep -n -e test //depot/main/... //depot/b1/....java
+```
+
 p4 server:
 - a file is stored as "<path>,v" e.g. `//depot/main/README.md` -> `/p4root/depot/main/README.md,v`
 
