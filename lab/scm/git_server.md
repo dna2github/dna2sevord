@@ -14,6 +14,7 @@ how to show file list:
 ```
 git diff-tree --no-commit-id --name-only -r <commit-ish>
 git ls-tree --name-only -r <commit-ish>
+git ls-tree --name-only <commit-ish> -- <path>
 
 git show --stat --oneline HEAD
 git show --stat --oneline b24f5fb
@@ -34,4 +35,16 @@ how to show file content:
 
 ```
 git show <commitHash>:/path/to/file
+```
+
+how to get blame for lines:
+
+```
+git blame -e -l [-L <start>,<end>] <revision> -- <path>
+```
+
+how to get commits for file:
+
+```
+git log --pretty=format:%H -- <path>
 ```
