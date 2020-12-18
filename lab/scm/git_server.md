@@ -48,3 +48,9 @@ how to get commits for file:
 ```
 git log --pretty=format:%H -- <path>
 ```
+
+how to search:
+
+```
+git grep -n -e <regexp> <commit>
+```
