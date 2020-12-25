@@ -1,0 +1,53 @@
+<html>
+<body>
+</body>
+<div align="center">
+   <a href="javascript:void(0);" onclick="shareToQq('test','https://www.google.com');" >QQ</a>
+   <a href="javascript:void(0);" onclick="shareToSinaWeiBo();" >WeiBo</a>
+   <a href="javascript:void(0);" onclick="shareToWeixin();" >Weixin</a>
+</div>
+<script type="text/javascript">
+function shareToQq(title, url, picUrl){
+   var p = {
+      url: url,
+      title: title,
+      summary: '',
+      desc:'',
+      pics : picUrl,
+      flash : '', /* video url */
+      commonClient : true, /* nested in client */
+      site: 'test', /* share source */
+   };
+   var s = [];
+   for (var i in p) {
+      s.push(i + '=' + encodeURIComponent(p[i] || ''));
+   }
+   var target_url = "http://connect.qq.com/widget/shareqq/iframe_index.html?" + s.join('&') ;
+   window.open(target_url, 'qq','height=520, width=720');
+}
+
+function shareToSinaWeiBo(title, url, picUrl){
+    var param = {
+       url: url
+       type: '3',
+       count: '1', /* show how many times shared (optional) */
+       appkey: '', /* app key (optional) */
+       title: title,
+       rnd: new Date().getTime()
+    }
+    var s = [];
+    for (var p in param ) {
+       s.push(p + '=' +encodeURIComponent( param[p ] || '' ) )
+    }
+    var target_url = "http://service.weibo.com/share/share.php?" + s.join('&');
+    window.open(target_url, 'sinaweibo', 'height=430, width=400');
+}
+
+function shareToWeixin(title, url) {
+   // generate a QRcode, actually we can use qrcode.min.js instead of using 3rd api
+   var target_url = "http://qr.liantu.com/api.php?text=" + encodeURICompnent(url);
+   window.open(target_url,'weixin','height=630, width=900');
+}
+
+</script>
+</html>
