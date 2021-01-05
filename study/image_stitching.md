@@ -1,0 +1,14 @@
+- ref: https://courses.engr.illinois.edu/cs498dwh/fa2010/
+- ref: https://courses.engr.illinois.edu/cs498dwh/fa2010/lectures/Lecture%2017%20-%20Photo%20Stitching.pdf
+
+- alias: image stitching
+- input: N images
+- output: merged image
+- dep:
+   - key point match (e.g. SIFT)
+- key:
+   - homography
+   - RANSAC(RANdom SAmple Consensus)
+   - projection surface, bundle adjustment
+   - blending (e.g. multi-band blending)
+   - straightening
