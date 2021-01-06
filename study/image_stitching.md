@@ -12,3 +12,5 @@
    - projection surface, bundle adjustment
    - blending (e.g. multi-band blending)
    - straightening
+- implemenation: https://github.com/latsic/imgalign
+- fork: https://github.com/dna2fork/imgalign
