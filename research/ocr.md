@@ -2,7 +2,7 @@
 
 ### How to make recognition tree smooth?
 
-image -> decode-level1 -> ... -> decode-levelN -> searchable -> encode-level1 -> ... -> encode-levelN -> text
+image -> extact-level1 -> ... -> extact-levelN -> atom -> recognize-level1 -> ... -> recognize-levelN -> text
 
 
 ### How to identify text / non-text objects?
