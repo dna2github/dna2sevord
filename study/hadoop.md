@@ -11,6 +11,19 @@
 
 ### tips
 
+- extra config required in hadoop-env.sh
+
+```
+# HDFS_NAMENODE_USER by default in hadoop-env.sh
+export HDFS_NAMENODE_USER=user
+
+# in SOME-env.sh, but can add in hadoop-env.sh
+export HDFS_DATANODE_USER=user
+export HDFS_SECONDARYNAMENODE_USER=user
+export YARN_RESOURCEMANAGER_USER=user
+export YARN_NODEMANAGER_USER=user
+```
+
 - use hostname instead of ip for /etc/hadoop/workers; otherwise, can only find localhost datanode
 - before /sbin/start-all.sh, make sure ssh without password to all machines
    - `ssh-keygen`
