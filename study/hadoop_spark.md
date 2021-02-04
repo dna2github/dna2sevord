@@ -11,6 +11,13 @@
 - 9864 DataNode Web UI
 - 8088 YARN Web UI
 
+### cmd
+
+- `hdfs namenode -format`
+- `hdfs dfsadmin -report`
+- `hdfs dfsadmin -refreshNodes`
+- `hdfs dfs ...`
+
 ### tips
 
 - extra config required in hadoop-env.sh
