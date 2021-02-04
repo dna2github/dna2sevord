@@ -56,3 +56,10 @@ ref: https://juejin.cn/post/6844903828622409736
 - 7077 Spark master communication port
 - 8080 Spark master Web UI
 - 8081 Spark slave Web UI
+
+### cmd
+
+- pyspark: `import pyspark.sql.types as types; df.withColumn(col, df[col].cast(types.FloatType()))`
+- pyspark: `df.agg({col: 'max'}).collect()[0]`
+- pyspark: `df.select(col).distinct() -> .count() / .collect() / .show()`
+
