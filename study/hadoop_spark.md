@@ -39,6 +39,7 @@ export YARN_NODEMANAGER_USER=user
 
 - use hostname instead of ip for /etc/hadoop/workers; otherwise, can only find localhost datanode
 - open 9000, 8031, 9864 | 9866, 8032 for cluster/client usage
+- make sure network available from worker to master (port >10000); otherwise, YARN cannot allocate resources to worker
 - before /sbin/start-all.sh, make sure ssh without password to all machines
    - `ssh-keygen`
    - `ssh-copy-id -i ~/.ssh/id_rsa.pub user@machine`
