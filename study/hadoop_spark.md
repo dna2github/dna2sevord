@@ -6,6 +6,7 @@
 
 - 9000 NameNode (hdfs)
 - 8031 ResourceManager (yarn)
+- 9866 DataNode (hdfs)
 
 - 9870 Hadoop Web UI
 - 9864 DataNode Web UI
@@ -34,6 +35,7 @@ export YARN_NODEMANAGER_USER=user
 ```
 
 - use hostname instead of ip for /etc/hadoop/workers; otherwise, can only find localhost datanode
+- open 9000, 8031, 9864, 9866 for cluster/client usage
 - before /sbin/start-all.sh, make sure ssh without password to all machines
    - `ssh-keygen`
    - `ssh-copy-id -i ~/.ssh/id_rsa.pub user@machine`
