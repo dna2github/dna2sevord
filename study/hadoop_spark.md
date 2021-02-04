@@ -1,3 +1,5 @@
+# Hadoop
+
 ### port
 
 (`iptables -A INPUT -p tcp --dport 0000 -j ACCEPT`)
@@ -30,3 +32,12 @@ export YARN_NODEMANAGER_USER=user
    - `ssh-copy-id -i ~/.ssh/id_rsa.pub user@machine`
 
 ref: https://weilu2.github.io/2018/10/30/Hadoop%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88/
+
+
+# Spark
+
+### port
+
+- 7077 Spark master communication port
+- 8080 Spark master Web UI
+- 8081 Spark slave Web UI
