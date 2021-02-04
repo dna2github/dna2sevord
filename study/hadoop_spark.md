@@ -46,6 +46,8 @@ export YARN_NODEMANAGER_USER=user
 
 ref: https://weilu2.github.io/2018/10/30/Hadoop%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88/
 
+ref: https://juejin.cn/post/6844903828622409736
+
 
 # Spark
 
