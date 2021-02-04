@@ -63,3 +63,22 @@ ref: https://juejin.cn/post/6844903828622409736
 - pyspark: `df.agg({col: 'max'}).collect()[0]`
 - pyspark: `df.select(col).distinct() -> .count() / .collect() / .show()`
 
+### common
+
+```
+import pyspark.sql.functions -> udf
+import pyspark.sql.types -> FloatType, StringType
+import pyspark.sql -> Row
+
+import pyspark.mllib.regression -> LabeledPoint
+
+df.select( udf(lambda x: x + 1, FloatType())(col).cast(StringType()) ).show()
+df.agg({col: 'max'}).collect()[0]
+df.select(col).distinct().count()
+spark.createDataFrame()
+df.rdd
+rdd.take(5)
+rdd.map(lambda x: LabeledPoint(x[0], [x[1:]]))
+
+...
+```
