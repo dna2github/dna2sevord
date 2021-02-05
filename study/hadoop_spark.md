@@ -57,6 +57,29 @@ ref: https://juejin.cn/post/6844903828622409736
 - 8080 Spark master Web UI
 - 8081 Spark slave Web UI
 
+### minio (s3)
+
+```
+from pyspark import SparkContext, SparkConf, SQLContext
+conf = (
+    SparkConf()
+    .setAppName("Spark minIO Test")
+    .set("spark.hadoop.fs.s3a.endpoint", "http://localhost:9091")
+    .set("spark.hadoop.fs.s3a.access.key", os.environ.get('minIO_ACCESS_KEY'))
+    .set("spark.hadoop.fs.s3a.secret.key", os.environ.get('minIO_SECRET_KEY'))
+    .set("spark.hadoop.fs.s3a.path.style.access", True)
+    .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+)
+sc = SparkContext(conf=conf).getOrCreate()
+sqlContext = SQLContext(sc)
+
+print(sc.wholeTextFiles('s3a://path/to/test.txt').collect())
+# Returns: [('s3a://path/to/test.txt', 'Some text\nfor testing\n')]
+path = "s3a://path/to/test.txt"
+rdd = sc.parallelize([('Mario', 'Red'), ('Luigi', 'Green'), ('Princess', 'Pink')])
+rdd.toDF(['name', 'color']).write.csv(path)
+```
+
 ### cmd
 
 - pyspark: `import pyspark.sql.types as types; df.withColumn(col, df[col].cast(types.FloatType()))`
