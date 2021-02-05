@@ -59,6 +59,8 @@ ref: https://juejin.cn/post/6844903828622409736
 
 ### minio (s3)
 
+ref: https://www.jitsejan.com/setting-up-spark-with-minio-as-object-storage.html
+
 ```
 from pyspark import SparkContext, SparkConf, SQLContext
 conf = (
