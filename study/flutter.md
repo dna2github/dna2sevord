@@ -8,3 +8,5 @@ flutter run
 flutter build apk --split-per-abi
 flutter install
 ```
+
+ref: https://flutter.dev/docs/deployment/android
