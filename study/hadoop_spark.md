@@ -92,6 +92,7 @@ rdd.toDF(['name', 'color']).write.csv(path)
 
 ```
 from pyspark.ml.feature import VectorAssembler
+assembler = VectorAssembler().setInputCols(['_c' + str(i) for i in range(42)]).setOutputCol('features')
 # _c42 can be string, others cannot
 dfx = a.transform(df).drop(*['_c' + str(i) for i in range(42)]).withColumnRenamed('_c42', 'label')
 # then get label: string and features: vector
