@@ -91,6 +91,13 @@ rdd.toDF(['name', 'color']).write.csv(path)
 ### common
 
 ```
+from pyspark.ml.feature import VectorAssembler
+# _c42 can be string, others cannot
+dfx = a.transform(df).drop(*['_c' + str(i) for i in range(42)]).withColumnRenamed('_c42', 'label')
+# then get label: string and features: vector
+# and follow: https://spark.apache.org/docs/latest/ml-classification-regression.html#decision-tree-classifier
+
+# old way
 import pyspark.sql.functions -> udf
 import pyspark.sql.types -> FloatType, StringType
 import pyspark.sql -> Row
@@ -104,6 +111,5 @@ spark.createDataFrame()
 df.rdd
 rdd.take(5)
 rdd.map(lambda x: LabeledPoint(x[0], [x[1:]]))
-
 ...
 ```
