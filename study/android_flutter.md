@@ -40,11 +40,14 @@ set -xe
 	exit 1
 }
 
+# usuage:
+# bash build.sh android-xx someApp
+
 # use the latest build tool version
 # and the oldest platform version for compatibility
 _BUILD_TOOLS_VERSION=$(ls $ANDROID_SDK_ROOT/build-tools | sort -n |tail -1)
 _PLATFORM=$1 #$(ls $ANDROID_SDK_ROOT/platforms | sort -nr |tail -1) 
-_APK_BASENAME=ToyVPN
+_APK_BASENAME=$2
 _ANDROID_CP=$ANDROID_SDK_ROOT/platforms/$_PLATFORM/android.jar
 _AAPT=$ANDROID_SDK_ROOT/build-tools/$_BUILD_TOOLS_VERSION/aapt
 _DX=$ANDROID_SDK_ROOT/build-tools/$_BUILD_TOOLS_VERSION/dx
