@@ -202,5 +202,12 @@ PASSWORD='shitest' ./bin/code-server --auth password \
 [node]:bin/code-server ->
    [node]:bin/code-server ->
       [node]:lib/vscode/out/vs/server/fork ->
-         [node]:lib/vscode/out/bootstrap-fork(--type=extensionHost)
+         visitor => editor >> [node]:lib/vscode/out/bootstrap-fork(--type=extensionHost)
+	 visitor => terminal >> [bash]
+
+[webUI] -> (each:visitor 2 ws channels)
+   [resource]:/static
+   [api]:/vscode-remote-resource
+   [api:ws]:?reconnectionToken=<uuid>&reconnection=false&skipWebSocketFrames=false
+   [api:ws]:?reconnectionToken=<uuid>&reconnection=false&skipWebSocketFrames=false
 ```
