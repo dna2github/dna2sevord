@@ -211,3 +211,9 @@ PASSWORD='shitest' ./bin/code-server --auth password \
    [api:ws]:?reconnectionToken=<uuid>&reconnection=false&skipWebSocketFrames=false
    [api:ws]:?reconnectionToken=<uuid>&reconnection=false&skipWebSocketFrames=false
 ```
+
+```
+authentication:
+
+release-standalone: out/node/util.js: handlePasswordValidation
+```
