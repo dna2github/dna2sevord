@@ -1,11 +1,11 @@
 # Dgraph basic op
 
-go build -tags 'oss' -o dgraph /path/to/source/dgraph/main.go
-dgraph zero --telemetry "sentry=false;reports=false;"
-dgraph alpha --telemetry "sentry=false;reports=false;" --lambda "num=0;"
-curl -X POST -H "Content-Type: application/graphql" http://127.0.0.1:8080/admin/schema -d @schema.graphql
-curl -X POST -H "Content-Type: application/graphql" http://127.0.0.1:8080/graphql -d @todo.graphql
-curl -X POST -H "Content-Type: application/graphql" http://127.0.0.1:8080/graphql -d @query2.graphql | python3 -m json.tool
+- go build -tags 'oss' -o dgraph /path/to/source/dgraph/main.go
+- dgraph zero --telemetry "sentry=false;reports=false;"
+- dgraph alpha --telemetry "sentry=false;reports=false;" --lambda "num=0;"
+- curl -X POST -H "Content-Type: application/graphql" http://127.0.0.1:8080/admin/schema -d @schema.graphql
+- curl -X POST -H "Content-Type: application/graphql" http://127.0.0.1:8080/graphql -d @todo.graphql
+- curl -X POST -H "Content-Type: application/graphql" http://127.0.0.1:8080/graphql -d @query2.graphql | python3 -m json.tool
 
 ```graphql
 """
