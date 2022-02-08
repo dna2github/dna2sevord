@@ -46,21 +46,35 @@ GO111MODULES=on go build -o dist/zoekt-merge-index cmd/zoekt-merge-index/main.go
 GO111MODULES=on go build -o dist/zoekt-webserver cmd/zoekt-webserver/main.go
 
 git clone git://github.com/sourcegraph/sourcegraph.git --depth=1
-/workspace/sourcegraph/cmd/github-proxy# GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/github-proxy github-proxy.go
-/workspace/sourcegraph/cmd/symbols# GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/symbols *.go
-/workspace/sourcegraph/cmd/searcher# GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/searcher main.go
-/workspace/sourcegraph/cmd/gitserver# GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/gitserver main.go
-/workspace/sourcegraph/cmd/repo-updater# GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/repo-updater main.go
-/workspace/sourcegraph/cmd/worker# GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/worker main.go
-/workspace/sourcegraph/cmd/frontend# bash pre-build.sh # ../../ui/assets/…
+/workspace/sourcegraph/cmd/github-proxy#
+GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/github-proxy github-proxy.go
+
+/workspace/sourcegraph/cmd/symbols#
+GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/symbols *.go
+
+/workspace/sourcegraph/cmd/searcher#
+GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/searcher main.go
+
+/workspace/sourcegraph/cmd/gitserver#
+GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/gitserver main.go
+
+/workspace/sourcegraph/cmd/repo-updater#
+GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/repo-updater main.go
+
+/workspace/sourcegraph/cmd/worker#
+GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/worker main.go
+
+/workspace/sourcegraph/cmd/frontend#
+bash pre-build.sh # /workspace/sourcegraph/ui/assets/…
 GO111MODULE=on CGO_ENABLED=0 go build -trimpath -buildmode exe -tags dist -o ~/go/bin/frontend main.go
 
-/workspace/sourcegraph/cmd/server# GO111MODULE=on CGO_ENABLED=0 go build -trimpath -ldflags
+/workspace/sourcegraph/cmd/server#
+GO111MODULE=on CGO_ENABLED=0 go build -trimpath -ldflags
    '-X github.com/sourcegraph/sourcegraph/internal/version.version=test0 -X github.com/sourcegraph/sourcegraph/internal/version.timestamp=1644328737' \
    -buildmode exe -installsuffix netgo -tags 'dist netgo' -o ~/go/bin/main.go main.go
 
+/workspace/sourcegraph/docker-images/syntax-highlighter#
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh # rust
-cd /workspace/sourcegraph/docker-images/syntax-highlighter
 cargo test --release
 cargo rustc --release
 cp target/release/syntect_server ~/go/bin
