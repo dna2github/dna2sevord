@@ -81,7 +81,7 @@ proxy_cache_path /path/to/cache/folder keys_zone=<key, e.g. cache-api>:<size, e.
 
 # cors.subconf
     if ($request_method = "OPTIONS") {
-       #add_header "Access-Control-Allow-Origin" "blitz.cn, blitz.gg, 192.168.*, 127.0.0.1, localhost:3000";
+       #add_header "Access-Control-Allow-Origin" "192.168.*, 127.0.0.1, localhost:3000";
        add_header "Access-Control-Allow-Origin" "*" always;
        add_header "Access-Control-Allow-Headers" "*" always;
        add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD" always;
