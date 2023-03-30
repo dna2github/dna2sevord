@@ -32,3 +32,10 @@ IP.1 = 127.0.0.1
 ```
 openssl req -new -nodes -x509 -keyout ca.key -newkey rsa:4096 -out ca.crt -config ssl.conf -extensions v3_req
 ```
+
+
+## windows pfx and signtool
+```
+openssl pkcs12 -export -in linux_cert+ca.pem -inkey privateky.key -out output.pfx
+SignTool sign /f MyCert.pfx /p MyPassword /t http://timestamp.digicert.com /n "companyname" my.exe
+```
