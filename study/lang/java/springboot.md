@@ -43,3 +43,32 @@ public class DemoApplication {
 
 }
 ```
+
+```
+@SpringBootApplication
+@Mapper (mybatis)
+@Autowired
+@Service
+@Bean
+@Component
+@Configure
+@CrossOrigin
+extends HandlerInterceptor -> preHandler, posthandler, afterCompletion
+extends WebMvcConfigurerAdapter -> addInterceptor
+implements Filter -> init, doFilter
+@ComponentScan
+@Controller
+@RestController
+@GetMapping
+@RequestMapping
+@RequestParam
+@PathVariable
+@RequestBody
+@ControllerAdvice
+@ExceptionHandler
+@EnableScheduling
+@Scheduled
+@EnableSwagger2
+@SpringBootTest
+@Profile
+```
