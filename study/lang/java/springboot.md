@@ -70,5 +70,15 @@ implements Filter -> init, doFilter
 @Scheduled
 @EnableSwagger2
 @SpringBootTest
+@Repository
 @Profile
+@EnableWebSecurity
+@Qualifier
+@EnableCaching
+@Cacheable("...")
+@Enable*HttpSession
+@EnableKafka
+@KafkaListener, KafkaTemplate, ProducerConfig, ConsumerConfig (kafka)
+implements ItemProcessor, Job, Step
+MockMvc
 ```
