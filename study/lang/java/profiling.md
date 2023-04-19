@@ -1,6 +1,11 @@
 # Profiling
 
 ```
+ref: https://bell-sw.com/announcements/2022/04/07/how-to-use-perf-to-monitor-java-performance/
+ref: https://bell-sw.com/announcements/2020/07/22/Hunting-down-code-hotspots-with-JDK-Flight-Recorder/
+```
+
+```
 sudo apt install openjdk-17-jdk
 sudo apt install linux-tools-common linux-tools-`uname -r` # perf
 
@@ -25,4 +30,11 @@ sleep 10
 jcmd <pid> JFR.dump name=1 filename=samples.jfr
 wget https://bit.ly/2H3Uqck -O sjk.jar
 java -jar sjk.jar ssa -f samples.jfr --flame > analysis.svg
+```
+
+```
+jcmd <pid> ManagementAgent.start \
+    jmxremote.authenticate=false \
+    jmxremote.ssl=false \
+    jmxremote.port=5555
 ```
