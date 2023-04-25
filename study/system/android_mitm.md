@@ -9,6 +9,9 @@ TODO: fix self-signed cert error for Android device
 ```
 pip install shadowsocks PySocks mitmproxy
 
+edit /lib/python3.9/site-packages/shadowsocks/crypto/openssl.py
+#!! replace EVP_CIPHER_CTX_clear (openssl 1.0.2) to EVP_CIPHER_CTX_reset (openssl > 1.1.x)
+
 edit /lib/python3.?/site-packages/shadowsocks/../socks.py
 +        if (type(dest_pair[0]) == bytes): dest_pair = (dest_pair[0].decode(), dest_pair[1])
          if len(dest_pair) != 2 or dest_pair[0].startswith("["):
