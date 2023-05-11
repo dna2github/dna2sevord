@@ -1,5 +1,7 @@
 ```
 TODO: fix self-signed cert error for Android device
+
+e.g. copy cacert to rooted Android under /system/etc/security/cacerts/
 ```
 
 - Android and packet receiver host (PRH) in the same WiFi.
