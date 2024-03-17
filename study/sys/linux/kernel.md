@@ -31,6 +31,7 @@ subsystem
       - TLB
    - kmalloc / vmalloc
    - swap
+   - process: brk, _edata (heap) / mmap / stack (esp)
 - IPC
    - pipe
    - named pipe
@@ -61,4 +62,7 @@ reboot
 sudo -s
 sysctl -w kernel.sysrq=1
 echo c > /proc/sysrq-trigger
+
+scripts/extract-vmlinux --> vmlinuz => vmlinux
+vmlinux-to-elf          --> vmlinux -> vmlinux.elf (add ksym, friendly for IDA)
 ```
