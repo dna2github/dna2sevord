@@ -26,5 +26,21 @@ systemctl enable kubelet
 
 kubeadm init
 cp /etc/kubernetes/admin.conf /root/kube.conf
-KUBECONFIG=/root/kube.conf kubectl get nodes
+export KUBECONFIG=/root/kube.conf
+
+kubectl get pods -A
+
+kubectl get nodes
+kubectl drain <node name> --delete-emptydir-data --force --ignore-daemonsets
+kubectl delete <node name>
+
+cat > /run/flannel/subnet.env <<EOF
+FLANNEL_NETWORK=10.1.0.0/16
+FLANNEL_SUBNET=10.1.17.1/24
+FLANNEL_MTU=1450
+FLANNEL_IPMASQ=true
+EOF
+
+flanneld
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
