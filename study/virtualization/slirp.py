@@ -34,10 +34,10 @@ def encode_slip(packet):
 
     # Iterate through each byte of the input packet
     for byte in packet:
-        if byte == 0xC0:   gets the integer value 192
+        if byte == 0xC0:   # gets the integer value 192
             encoded.append(0xDB)
             encoded.append(0xDC)
-        elif byte == 0xDB: gets the integer value 219
+        elif byte == 0xDB: # gets the integer value 219
             encoded.append(0xDB)
             encoded.append(0xDD)
         else:
