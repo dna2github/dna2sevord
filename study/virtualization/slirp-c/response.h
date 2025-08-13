@@ -1,5 +1,5 @@
-#ifndef _TMPRESPONSE_H_
-#define _TMPRESPONSE_H_
+#ifndef _RESPONSE_H_
+#define _RESPONSE_H_
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -7,58 +7,9 @@
 //#include <sys/time.h>
 
 #include "slip.h"
-
-// IP header structure
-struct ip_header {
-    uint8_t  version_ihl;
-    uint8_t  tos;
-    uint16_t total_length;
-    uint16_t identification;
-    uint16_t flags_fragment;
-    uint8_t  ttl;
-    uint8_t  protocol;
-    uint16_t checksum;
-    uint32_t src_addr;
-    uint32_t dst_addr;
-};
-
-// ICMP header structure
-struct icmp_header {
-    uint8_t  type;
-    uint8_t  code;
-    uint16_t checksum;
-    uint16_t identifier;
-    uint16_t sequence;
-};
-
-// Protocol numbers
-#define PROTO_ICMP 1
-#define PROTO_TCP  6
-#define PROTO_UDP  17
-
-// ICMP types
-#define ICMP_ECHO_REQUEST  8
-#define ICMP_ECHO_REPLY    0
-
-// Calculate IP checksum
-uint16_t calculate_checksum(uint16_t *data, int len) {
-    uint32_t sum = 0;
-    
-    while (len > 1) {
-        sum += *data++;
-        len -= 2;
-    }
-    
-    if (len == 1) {
-        sum += *(uint8_t*)data;
-    }
-    
-    while (sum >> 16) {
-        sum = (sum & 0xFFFF) + (sum >> 16);
-    }
-    
-    return (uint16_t)(~sum);
-}
+#include "util.h"
+#include "type.h"
+#include "ping.h"
 
 // Parse IP packet and generate response
 int parse_and_respond(unsigned char *packet, int packet_len, 
@@ -80,6 +31,15 @@ int parse_and_respond(unsigned char *packet, int packet_len,
     fprintf(stderr, "Protocol: %d\n", protocol);
     
     if (protocol == PROTO_ICMP) {
+fprintf(stderr, "value: %02x, %02x\n", ICMP_ECHO_REQUEST, ICMP_ECHO_REPLY);
+// /*
+     *response_len = do_ping(packet, packet_len, response);
+     if (*response_len == 0) {
+        return -1;
+     }
+     return 0;
+// */
+
         // Handle ICMP - generate ping response
         struct icmp_header *icmp_hdr = (struct icmp_header *)(packet + ip_hdr_len);
         
@@ -103,11 +63,11 @@ int parse_and_respond(unsigned char *packet, int packet_len,
             
             // Calculate ICMP checksum
             int icmp_len = ntohs(resp_ip_hdr->total_length) - ip_hdr_len;
-            resp_icmp_hdr->checksum = calculate_checksum((uint16_t *)resp_icmp_hdr, icmp_len);
+            resp_icmp_hdr->checksum = calculate_checksum(resp_icmp_hdr, icmp_len);
             
             // Update IP checksum
             resp_ip_hdr->checksum = 0;
-            resp_ip_hdr->checksum = calculate_checksum((uint16_t *)resp_ip_hdr, ip_hdr_len);
+            resp_ip_hdr->checksum = calculate_checksum(resp_ip_hdr, ip_hdr_len);
             
             *response_len = packet_len;
             fprintf(stderr, "Generated ICMP Echo Reply\n");
@@ -143,10 +103,10 @@ int parse_and_respond(unsigned char *packet, int packet_len,
         memcpy(response + 28, packet, ip_hdr_len + 8);
         
         // Calculate ICMP checksum
-        resp_icmp_hdr->checksum = calculate_checksum((uint16_t *)resp_icmp_hdr, 36);
+        resp_icmp_hdr->checksum = calculate_checksum(resp_icmp_hdr, 36);
         
         // Calculate IP checksum
-        resp_ip_hdr->checksum = calculate_checksum((uint16_t *)resp_ip_hdr, 20);
+        resp_ip_hdr->checksum = calculate_checksum(resp_ip_hdr, 20);
         
         *response_len = 56;
         fprintf(stderr, "Generated ICMP Destination Unreachable (DROP) for %s\n", 

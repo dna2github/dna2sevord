@@ -6,22 +6,10 @@
 #include <errno.h>
 
 #include "slip.h"
-#include "tmp-response.h"
+#include "wrap.h"
 
+static Slirp* slirp = NULL;
 volatile sig_atomic_t keep_running = 1;
-
-void dump_buf(unsigned char * buf, int len) {
-   fprintf(stderr, "\nbuf: ");
-   for (int i = len; i > 0; i--) {
-      fprintf(stderr, "\\x%02x", *buf);
-      buf++;
-   }
-   fprintf(stderr, "\n");
-}
-void dump_raw(unsigned char * buf, int len) {
-   fwrite(buf, 1, len, stdout);
-   fflush(stdout);
-}
 
 void signal_handler(int signum) {
     switch(signum) {
@@ -69,12 +57,47 @@ int main() {
     
     // Ignore SIGPIPE to handle broken pipes gracefully
     signal(SIGPIPE, SIG_IGN);
-    
+
+    slirp = slirp_init_with_config();
+
     fprintf(stderr, "Slirp program started. Reading from stdin and writing to stderr.\n");
     fprintf(stderr, "Press Ctrl+C or send SIGTERM to exit gracefully.\n\n");
     
+    // Allocate initial fd mapping array
+    PollData poll_data = {0};
+    poll_data.fd_capacity = 16;
+    poll_data.fd_map = malloc(poll_data.fd_capacity * sizeof(FdMapping));
+
     // Main loop: read from stdin and write to stderr
     while (keep_running) {
+        fd_set rfds, wfds, xfds;
+        struct timeval tv;
+        int timeout = 60000;
+
+        FD_ZERO(&rfds);
+        FD_ZERO(&wfds);
+        FD_ZERO(&xfds);
+        
+        // Add SLIRP file descriptors to select
+        poll_data.rfds = &rfds;
+        poll_data.wfds = &wfds;
+        poll_data.xfds = &xfds;
+        poll_data.max_fd = -1;
+        poll_data.fd_count = 0;
+        slirp_pollfds_fill(slirp, &timeout, add_poll_cb, &poll_data);
+        
+        // Wait for events
+        int ret = select(poll_data.max_fd + 1, &rfds, &wfds, &xfds, &tv);
+        
+        if (ret < 0) {
+            if (errno != EINTR) {
+                perror("select");
+                break;
+            }
+        } else if (ret > 0) {
+            // Process SLIRP events
+            slirp_pollfds_poll(slirp, (ret < 0), get_revents_cb, &poll_data);
+        }
         bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer));
         
         if (bytes_read == -1) {
@@ -90,35 +113,18 @@ int main() {
             fprintf(stderr, "\nEOF reached on stdin. Exiting.\n");
             break;
         } else {
-            // Write to stderr
-            /*
-            ssize_t bytes_written = 0;
-            while (bytes_written < bytes_read && keep_running) {
-                ssize_t result = write(STDERR_FILENO, buffer + bytes_written, 
-                                     bytes_read - bytes_written);
-                if (result == -1) {
-                    if (errno == EINTR) {
-                        continue;
-                    } else {
-                        perror("Error writing to stderr");
-                        keep_running = 0;
-                        break;
-                    }
-                }
-                bytes_written += result;
-            }
-            */
             outlen = slip_decode(buffer, bytes_read, outbuf);
-            dump_buf(outbuf, outlen);
-            int reslen = 0;
-            if (parse_and_respond(outbuf, outlen, tmpbuf, &reslen)) {
-               fprintf(stderr, "parse and respond error ...\n");
-               continue;
-            }
-            outlen = slip_encode(tmpbuf, reslen, outbuf);
-            dump_buf(outbuf, outlen);
-            dump_raw(outbuf, outlen);
+            size_t tmplen = load_ethernet(outbuf, outlen, tmpbuf); // if packet is too large, may out of bound
+            //dump_buf(buffer, outlen);
+            dump_buf(tmpbuf, tmplen);
+            slirp_input(slirp, tmpbuf, tmplen);
+            usleep(1000);
         }
+    }
+
+    if (slirp) {
+       // Cleanup
+       slirp_cleanup(slirp);
     }
     
     fprintf(stderr, "\nProgram terminated.\n");
